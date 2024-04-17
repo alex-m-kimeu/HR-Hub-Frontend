@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Admin_Navbar = () => {
+export const Admin = () => {
   return (
     <div>
-      
+      <h1>Admin sidebar</h1>
     </div>
   )
 }
 
-export default Admin_Navbar
+

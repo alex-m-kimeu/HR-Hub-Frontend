@@ -1,11 +1,12 @@
 import React from 'react'
 
-const Employee_Navbar = () => {
+export const Employee = () => {
   return (
     <div>
+        <h1>employee side bar</h1>
       
     </div>
   )
 }
 
-export default Employee_Navbar
+
