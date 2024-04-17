@@ -5,7 +5,7 @@ import React from 'react';
 export const HiringPage = () => {
   return (
     <div>
-      <h1>Hiring Page</h1>
+      <h1>Hiring Page!</h1>
     </div>
   );
 }
