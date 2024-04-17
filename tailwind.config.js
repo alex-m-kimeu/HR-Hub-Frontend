@@ -18,6 +18,9 @@ export default {
         'variant1-dark': '#323434',
         'Heading': '#4B5563',
         'red': '#FF3C5F'
+      },
+      fontFamily:{
+        'body':"Open Sans"
       }
     },
   },
