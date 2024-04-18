@@ -1,7 +1,44 @@
+import { useEffect, useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
+
 export const DashboardEmployee = () => {
+    const [employee, setEmployee] = useState(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.sub.id;
+
+        fetch('http://127.0.0.1:5500/employees', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const user = data.find(employee => employee.id === userId);
+                setEmployee(user);
+            })
+            .catch(error => console.error('Error:', error));
+    }, []);
+
     return (
-        <div>
-            <h1>Employee Dashboard</h1>
+        <div className="flex flex-col items-center justify-center space-y-10 min-h-screen">
+            {employee ? (
+                <>
+                    <h1 className='text-Heading text-[20px] font-bold'>Welcome {employee.name}</h1>
+                    <div className='w-[345px] h-[345px] rounded-[64px] overflow-hidden'>
+                        <img className='w-full h-full object-cover' src={employee.image} alt={employee.name} />
+                    </div>
+                    <button
+                        className='bg-secondary text-primary-light px-[10px] py-[10px] rounded-[8px]'
+                    >
+                        Edit Profile
+                    </button>
+                </>
+            ) : (
+                <p>Loading...</p>
+            )}
         </div>
-    )
+    );
 };
