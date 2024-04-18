@@ -9,6 +9,7 @@ import { LeaveAdmin } from "./pages/Leave/LeaveAdmin";
 import { LeaveEmployee } from "./pages/Leave/LeaveEmployee";
 import { ReviewsAdmin } from "./pages/Reviews/ReviewsAdmin";
 import { ReviewsEmployee } from "./pages/Reviews/ReviewsEmployee";
+import { Layout } from "./Components/Layout/Layout";
 
 const routes = [
     {
@@ -21,67 +22,83 @@ const routes = [
     },
     {
         path: "/admin/dashboard",
-        Element: DashboardAdmin,
+        Element: () => (
+            <Layout Sidebar={SidebarAdmin}>
+                <DashboardAdmin />
+            </Layout>
+        ),
         isAuthenticated: true,
-        layout: "Main",
         role: "admin",
-        Sidebar: SidebarAdmin,
     },
     {
         path: "/employee/dashboard",
-        Element: DashboardEmployee,
+        Element: () => (
+            <Layout Sidebar={SidebarEmployee}>
+                <DashboardEmployee />
+            </Layout>
+        ),
         isAuthenticated: true,
-        layout: "Main",
         role: "employee",
-        Sidebar: SidebarEmployee,
     },
     {
         path: "/employees",
-        Element: Employees,
+        Element: () => (
+            <Layout Sidebar={SidebarAdmin}>
+                <Employees />
+            </Layout>
+        ),
         isAuthenticated: true,
-        layout: "Main",
         role: "admin",
-        Sidebar: SidebarAdmin,
     },
     {
         path: "/hiring",
-        Element: Hiring,
+        Element: () => (
+            <Layout Sidebar={SidebarAdmin}>
+                <Hiring />
+            </Layout>
+        ),
         isAuthenticated: true,
-        layout: "Main",
         role: "admin",
-        Sidebar: SidebarAdmin,
     },
     {
         path: "/admin/leave",
-        Element: LeaveAdmin,
+        Element: () => (
+            <Layout Sidebar={SidebarAdmin}>
+                <LeaveAdmin />
+            </Layout>
+        ),
         isAuthenticated: true,
-        layout: "Main",
         role: "admin",
-        Sidebar: SidebarAdmin,
     },
     {
         path: "/employee/leave",
-        Element: LeaveEmployee,
+        Element: () => (
+            <Layout Sidebar={SidebarEmployee}>
+                <LeaveEmployee />
+            </Layout>
+        ),
         isAuthenticated: true,
-        layout: "Main",
         role: "employee",
-        Sidebar: SidebarEmployee,
     },
     {
         path: "/admin/reviews",
-        Element: ReviewsAdmin,
+        Element: () => (
+            <Layout Sidebar={SidebarAdmin}>
+                <ReviewsAdmin />
+            </Layout>
+        ),
         isAuthenticated: true,
-        layout: "Main",
         role: "admin",
-        Sidebar: SidebarAdmin,
     },
     {
         path: "/employee/reviews",
-        Element: ReviewsEmployee,
+        Element: () => (
+            <Layout Sidebar={SidebarEmployee}>
+                <ReviewsEmployee />
+            </Layout>
+        ),
         isAuthenticated: true,
-        layout: "Main",
         role: "employee",
-        Sidebar: SidebarEmployee,
     },
 ];
 
