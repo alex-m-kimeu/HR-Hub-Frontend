@@ -31,9 +31,9 @@ export const Employees = () => {
   }
 
   return (
-    <div className="px-4 sm:px-28 dark:bg-dark3">
-      <h2 className="text-green font-sans font-extrabold text-2xl text-center py-5">
-        Employee Records
+    <div className="px-4 sm:px-28 dark:bg-variant1-dark">
+      <h2 className="text-Heading font-sans font-extrabold text-2xl text-left py-5">
+        Employees
       </h2>
       <Search search={search} setSearch={setSearch} />
       <EmployeesList employees={filteredEmployees} onDelete={handleDelete} />

@@ -4,7 +4,7 @@ import { EmployeeCard } from "./EmployeeCard";
 
 export const EmployeesList = ({ employees, onDelete }) => {
   return (
-    <div className="flex min-h-screen pb-12">
+    <div className="flex min-h-screen pb-12 ">
       <div className="relative overflow-x-auto w-full">
         <div className="sm:hidden flex flex-wrap justify-center gap-4">
           {employees.map((employee) => {
@@ -12,14 +12,16 @@ export const EmployeesList = ({ employees, onDelete }) => {
           })}
         </div>
         <table className="hidden sm:table w-full mx-auto text-left font-sans text-dark">
-          <thead className="text-[18px] font-normal bg-green dark:bg-dark1 text-white dark:text-green">
-            <tr className="border-[6px] border-white dark:border-dark3">
-              <th className="p-[10px]">ID</th>
-              <th className="p-[10px]">Employee</th>
-              <th className="p-[10px]">Email Address</th>
-              <th className="p-[10px]">Department</th>
-              <th className="p-[10px]">Role</th>
-              <th className="p-[10px]">Actions</th>
+          <thead className="text-[18px] font-body bg-secondary :bg-dark1 text-white dark:text-green">
+            <tr className="border-[6px] border-white">
+              <th className="p-[10px]" >ID</th>
+              <th className="p-[10px]" >Employee</th>
+              <th className="p-[10px]" >Email Address</th>
+              <th className="p-[10px]" >Department</th>
+              <th className="p-[10px]" >Role</th>
+              <th className="p-[10px]" >Actions</th>
+              <th className="p-[10px]" > </th>
+
             </tr>
           </thead>
           <tbody className="text-[16px] font-normal text-dark dark:text-white ">
