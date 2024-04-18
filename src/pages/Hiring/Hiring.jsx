@@ -40,11 +40,11 @@ export const Hiring = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className=" max-w-md">
-        <div className="flex items-center justify-center mb-16">
+        <div className="flex items-center justify-center mb-20">
           <img src={hiringImage} alt="Hiring" className="w-24 h-24 mr-4" />
-          <h1 className="text-4xl font-bold text-Heading">Hiring</h1>
+          <h1 className="text-4xl mt-12 font-bold text-Heading">Hiring</h1>
         </div>
-        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8">
+        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-10 pb-8">
           <h3 className="text-lg text-center font-bold mb-4 text-Heading">Add new hire</h3>
           <div className="flex flex-col space-y-4">
             <input
