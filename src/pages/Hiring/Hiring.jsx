@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import hiringImage from '../../assets/hiring.png'
+import hiringImage from '../../assets/hiring.png';
 
 export const Hiring = () => {
   const [employee, setEmployee] = useState({
@@ -38,11 +38,13 @@ export const Hiring = () => {
   };
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="w-full max-w-md">
-        <img src={hiringImage}alt="Logo" className="mx-auto mb-4" />
+    <div className="flex justify-center items-center h-screen">
+      <div className=" max-w-md">
+        <div className="flex items-center justify-center mb-16">
+          <img src={hiringImage} alt="Hiring" className="w-24 h-24 mr-4" />
+          <h1 className="text-4xl font-bold text-Heading">Hiring</h1>
+        </div>
         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8">
-          <h2 className="text-2xl text-center font-bold mb-4 text-Heading">Hiring</h2>
           <h3 className="text-lg text-center font-bold mb-4 text-Heading">Add new hire</h3>
           <div className="flex flex-col space-y-4">
             <input
