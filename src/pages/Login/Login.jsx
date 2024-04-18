@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import jwt_decode from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 import logo from "../../assets/logo.png";
 
 export const Login = () => {
@@ -8,34 +8,72 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-    
-        fetch('http://127.0.0.1:5500/signin', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password
-            }),
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
+
+        try {
+            const response = await fetch('http://127.0.0.1:5500/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                }),
+            });
+
+            if (!response.ok) {
                 throw new Error('Error: ' + response.statusText);
             }
-        })
-        .then(data => {
+
+            const data = await response.json();
             localStorage.setItem('token', data.access_token);
-            // const decodedToken = jwt_decode(data.access_token);
-            // const userRole = decodedToken.role; 
-            navigate('/');
-        })
-        .catch(error => console.error('Error:', error));
+            localStorage.setItem('refreshToken', data.refresh_token);
+            const decodedToken = jwtDecode(data.access_token);
+            localStorage.setItem('role', decodedToken.sub.role);
+
+            if (decodedToken.sub.role === 'admin') {
+                navigate('/admin/dashboard');
+            } else if (decodedToken.sub.role === 'employee') {
+                navigate('/employee/dashboard');
+            } else {
+                throw new Error('Invalid role');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
+
+    // Function to refresh token
+    const refreshToken = async () => {
+        const refreshToken = localStorage.getItem('refreshToken');
+
+        try {
+            const response = await fetch('http://127.0.0.1:5500/refresh-token', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${refreshToken}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Error: ' + response.statusText);
+            }
+
+            const data = await response.json();
+            localStorage.setItem('token', data.access_token);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    // Call refreshToken function when access token is expired
+    const token = localStorage.getItem('token');
+    const decodedToken = jwtDecode(token);
+    if (decodedToken.exp < Date.now() / 1000) {
+        refreshToken();
+    }
 
     return (
         <div className='flex items-center justify-center min-h-screen bg-primary-light'>
@@ -60,7 +98,7 @@ export const Login = () => {
                     />
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center space-x-2 font-body text-sm font-normal text-Heading'>
-                        <input type='checkbox'/>
+                            <input type='checkbox' />
                             <label>Remember me</label>
                         </div>
                         <p className='text-secondary hover:cursor-pointer font-body text-sm font-normal'>Forgot password?</p>
