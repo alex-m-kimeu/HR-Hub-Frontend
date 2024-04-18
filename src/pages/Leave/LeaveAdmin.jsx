@@ -31,9 +31,18 @@ export const LeaveAdmin = () => {
       <div>
         <h1>Leave</h1>
         <button>Create time off</button>
-        <div>
+        <div className="table">
           <table>
             <thead>
+              <tr>
+                <th>ID</th>
+                <th>Employee</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
               {leaveData.map((item) => (
                 <tr key={item.id}>
                   <td>{item.id}</td>
@@ -43,7 +52,7 @@ export const LeaveAdmin = () => {
                   <td>{item.status}</td>
                 </tr>
               ))}
-            </thead>
+            </tbody>
           </table>
         </div>
       </div>

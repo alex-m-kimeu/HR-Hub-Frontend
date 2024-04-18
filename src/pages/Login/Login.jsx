@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import logo from "../../assets/logo.png";
@@ -7,6 +7,44 @@ export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+
+    // Function to refresh token
+    const refreshToken = async () => {
+        const refreshToken = localStorage.getItem('refreshToken');
+
+        try {
+            const response = await fetch('http://127.0.0.1:5500/refresh-token', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${refreshToken}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Error: ' + response.statusText);
+            }
+
+            const data = await response.json();
+            localStorage.setItem('token', data.access_token);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        // Call refreshToken function when access token is expired
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const decodedToken = jwtDecode(token);
+                if (decodedToken.exp < Date.now() / 1000) {
+                    refreshToken();
+                }
+            } catch (error) {
+                console.error("Invalid token", error);
+            }
+        }
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -54,42 +92,6 @@ export const Login = () => {
             console.error('Error:', error);
         }
     };
-
-    // Function to refresh token
-    const refreshToken = async () => {
-        const refreshToken = localStorage.getItem('refreshToken');
-
-        try {
-            const response = await fetch('http://127.0.0.1:5500/refresh-token', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${refreshToken}`
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Error: ' + response.statusText);
-            }
-
-            const data = await response.json();
-            localStorage.setItem('token', data.access_token);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    // Call refreshToken function when access token is expired
-    const token = localStorage.getItem('token');
-    if (token) {
-        try {
-            const decodedToken = jwtDecode(token);
-            if (decodedToken.exp < Date.now() / 1000) {
-                refreshToken();
-            }
-        } catch (error) {
-            console.error("Invalid token", error);
-        }
-    }
 
     return (
         <div className='flex items-center justify-center min-h-screen bg-primary-light'>
