@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import reviewsImage from '../../assets/reviews.png';
 
 export const ReviewsAdmin = () => {
     const [formData, setFormData] = useState({
         name: '',
-        email: '',})
+        email: '',
+    })
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
@@ -24,21 +26,21 @@ export const ReviewsAdmin = () => {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            setReviews(data);
-            setLoading(false);
-        })
-        .catch(error => {
-            console.error('Fetch Error:', error);
-            setLoading(false);
-            setError('Failed to fetch reviews');
-        });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setReviews(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error);
+                setLoading(false);
+                setError('Failed to fetch reviews');
+            });
     }, []);
 
     const handleAddReview = () => {
@@ -53,28 +55,28 @@ export const ReviewsAdmin = () => {
         }
 
         fetch("http://127.0.0.1:5500/reviews", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(formData),
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(formData),
         })
-        .then(data => {
-            setReviews([...reviews, data]);
-            setShowModal(false);
-            setNewReview("");
-        })
-        .catch(error => {
-            console.error('Submit Error:', error);
-            setError('Failed to submit review');
-        });
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setReviews([...reviews, data]);
+                setShowModal(false);
+                setNewReview("");
+            })
+            .catch(error => {
+                console.error('Submit Error:', error);
+                setError('Failed to submit review');
+            });
     };
 
     if (error) {
@@ -82,11 +84,13 @@ export const ReviewsAdmin = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center space-y-10 h-screen overflow-auto">
-            <h1 className='text-Heading text-[20px] font-bold'>Reviews</h1>
-
+        <div className="flex flex-col items-center justify-center space-y-10 h-screen o">
+            <div className="flex items-center justify-center mb-[20px]">
+                <img src={reviewsImage} alt="Reviews" className="w-[40px] h-[40px] mr-4" />
+                <h1 className="text-4xl font-bold text-Heading">Reviews</h1>
+            </div>
             {/* Review Form */}
-            <form onSubmit={handleSubmitReview} className="w-full max-w-md">
+            <form onSubmit={handleSubmitReview} className="bg-white shadow-md rounded px-8 pt-10 pb-8w-full max-w-md">
                 <div className="flex flex-col space-y-4">
                     <input
                         className="w-full p-2 border rounded-md"
