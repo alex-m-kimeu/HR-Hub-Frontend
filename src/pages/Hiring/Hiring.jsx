@@ -1,41 +1,57 @@
 import { useState } from 'react';
-import axios from 'axios';
 import hiringImage from '../../assets/hiring.png';
 
 export const Hiring = () => {
-  const [employee, setEmployee] = useState({
+  const [formData, setFormData] = useState({
     name: '',
     email: '',
     department: '',
-    role: '',
-    password: ''
+    role: 'employee',
+    password: '',
+    image: ''
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEmployee(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    const { id, value } = e.target;
+    setFormData((formData) => ({ ...formData, [id]: value }));
   };
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
-    axios.post('http://127.0.0.1:5500/', employee)
-      .then(response => {
-        console.log('Response from server:', response.data);
-        setEmployee({
-          name: '',
-          email: '',
-          department: '',
-          role: '',
-          password: ''
-        });
-      })
-      .catch(error => {
-        console.error('Error submitting data:', error);
-      });
-  };
+  
+    const token = localStorage.getItem('token');
+  
+    fetch("http://127.0.0.1:5500/employees", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(formData),
+    })
+    .then((resp) => {
+      if (!resp.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return resp.json();
+    })
+    .then((data) => {
+      // Do something with the response data
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error('There has been a problem with your fetch operation:', error);
+    });
+  
+    setFormData({
+      name: "",
+      email: "",
+      department: "",
+      role: "employee",
+      password: '',
+      image: ""
+    })
+  }
 
   return (
     <div className="flex justify-center items-center">
@@ -48,46 +64,61 @@ export const Hiring = () => {
           <h3 className="text-lg text-center font-bold mb-4 text-Heading">Add new hire</h3>
           <div className="flex flex-col space-y-4">
             <input
+              id="name"
               type="text"
               name="name"
               placeholder="Employee's Name"
-              value={employee.name}
+              value={formData.name}
               onChange={handleChange}
               className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
             <input
+              id="email"
               type="email"
               name="email"
               placeholder="Email"
-              value={employee.email}
+              value={formData.email}
               onChange={handleChange}
               className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
             <input
+              id="department"
               type="text"
               name="department"
               placeholder="Department"
-              value={employee.department}
+              value={formData.department}
               onChange={handleChange}
               className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
-            <input
-              type="text"
-              name="role"
-              placeholder="Role"
-              value={employee.role}
-              onChange={handleChange}
+            <select
+              id="role"
               className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              value={formData.role}
+              onChange={handleChange}
               required
-            />
+            >
+              <option value="employee">employee</option>
+              <option value="admin">admin</option>
+            </select>
             <input
+              id="password"
               type="password"
               name="password"
               placeholder="Password"
-              value={employee.password}
+              value={formData.password}
+              onChange={handleChange}
+              className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              required
+            />
+            <input
+              id="image"
+              type="text"
+              name="image"
+              placeholder="Image Url"
+              value={formData.image}
               onChange={handleChange}
               className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
