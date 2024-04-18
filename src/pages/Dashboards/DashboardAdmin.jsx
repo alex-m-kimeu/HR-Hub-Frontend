@@ -23,7 +23,7 @@ export const DashboardAdmin = () => {
   }, []);
 
   return (
-    <div className="font-body flex flex-col">
+    <div className="font-body flex flex-col gap-[50px]">
       <div className=" flex flex-col gap-[50px]">
         <h1 className="text-Heading text-[30px] font-bold">Welcome to HR-Hub</h1>
         <div className="flex gap-[80px]">
@@ -50,20 +50,20 @@ export const DashboardAdmin = () => {
           </div>
         </div>
       </div>
-      <table className="table-auto">
-        <thead>
-          <tr>
-            <th className="px-4 py-2">Employee</th>
-            <th className="px-4 py-2">Department</th>
-            <th className="px-4 py-2">Status</th>
+      <table className="w-full mx-auto text-left text-Heading">
+        <thead className="text-[18px] font-normal bg-secondary text-white">
+          <tr className="border-[6px] border-white">
+            <th className="p-[10px]">Employee</th>
+            <th className="p-[10px]">Department</th>
+            <th className="p-[10px]">Status</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="text-[16px] font-normal text-Heading">
           {employees.map((employee, index) => (
-            <tr key={index} className={index % 2 === 0 ? 'bg-gray-200' : ''}>
-              <td className="border px-4 py-2">{employee.name}</td>
-              <td className="border px-4 py-2">{employee.department}</td>
-              <td className="border px-4 py-2">{employee.leaves.length > 0 ? 'On Leave' : 'In Office'}</td>
+            <tr key={index} className="bg-white border-[6px] border-white">
+              <td className="p-[10px]">{employee.name}</td>
+              <td className="p-[10px]">{employee.department}</td>
+              <td className="p-[10px]">{employee.leaves.length > 0 ? 'On Leave' : 'In Office'}</td>
             </tr>
           ))}
         </tbody>
