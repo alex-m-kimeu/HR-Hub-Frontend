@@ -2,7 +2,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AuthWrapper from './AuthWrapper';
 import routes from './routes';
-import { Login } from './pages/Login/Login'; 
+import { Login } from './pages/Login/Login';
 
 function App() {
   return (
