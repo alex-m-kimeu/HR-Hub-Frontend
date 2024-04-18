@@ -1,39 +1,36 @@
 import React, { useState, useEffect } from "react";
 
 export const LeaveAdmin = () => {
-  const [leaveData, setLeaveData] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchLeaveData = async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:5500/leave");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        setLeaveData(data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
-
-    fetchLeaveData();
-  }, []);
+    const [leave, setLeave] = useState([]);
+    
+  
+   useEffect(() => {
+       const token = localStorage.getItem("token");
 
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
+     fetch("http://127.0.0.1:5500/leave", {
+       headers: {
+         Authorization: "Bearer " + token,
+       },
+     })
+       .then((response) => response.json())
+       .then((data) => {
+         const user = data.find((leave) => leave.id === userId);
+         setLeave(user);
+       })
+       .catch((error) => console.error("Error:", error));
+   }, []);
+    
   return (
     <div>
       <div>
-        <h1>Leave</h1>
-        <button>Create time off</button>
+        <h1 className="font-bold text-lg my-5">Leave</h1>
+        <button type="button" className="my-3 bg-slate-200 rounded-xl p-2">
+          Create time off
+        </button>
         <div className="table">
           <table>
-            <thead>
+            <thead className="space-x-3">
               <tr>
                 <th>ID</th>
                 <th>Employee</th>
@@ -43,7 +40,7 @@ export const LeaveAdmin = () => {
               </tr>
             </thead>
             <tbody>
-              {leaveData.map((item) => (
+              {leave.map((item) => (
                 <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>{item.employee}</td>
