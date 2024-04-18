@@ -7,7 +7,7 @@ export const LeaveAdmin = () => {
   useEffect(() => {
     const fetchLeaveData = async () => {
       try {
-        const response = await fetch("#api");
+        const response = await fetch("http://127.0.0.1:5500/leave");
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
