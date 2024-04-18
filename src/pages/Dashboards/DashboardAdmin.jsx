@@ -1,47 +1,73 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { IoIosPeople } from "react-icons/io";
 
 export const DashboardAdmin = () => {
-    const [employees, setEmployees] = useState([]);
-    const [totalEmployees, setTotalEmployees] = useState(0);
-  
-    useEffect(() => {
-      // Fetch employees data
-      fetch("http://127.0.0.1:5500/employees")
-        .then(response => response.json())
-        .then(data => {
-          setEmployees(data);
-          setTotalEmployees(data.length);
-        })
-        .catch(error => console.error('Error fetching employees:', error));
-    }, []);
-  
-    return (
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Welcome to HR Hub</h1>
-  
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="bg-white shadow-md rounded p-4">
-            <h2 className="text-xl font-semibold mb-2">Employees</h2>
-            <p className="text-2xl font-bold">{totalEmployees}</p>
+  const [employees, setEmployees] = useState([]);
+  const [employeesOnLeave, setEmployeesOnLeave] = useState(0);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    fetch("http://127.0.0.1:5500/employees", {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setEmployees(data);
+        const onLeave = data.filter(employee => employee.leaves.length > 0).length;
+        setEmployeesOnLeave(onLeave);
+      })
+      .catch(error => console.error('Error fetching employees:', error));
+  }, []);
+
+  return (
+    <div className="font-body flex flex-col">
+      <div className=" flex flex-col gap-[50px]">
+        <h1 className="text-Heading text-[30px] font-bold">Welcome to HR-Hub</h1>
+        <div className="flex gap-[80px]">
+          <div className="flex flex-col gap-[10px] p-[10px] bg-variant1-light rounded-[10px]">
+            <h2 className="text-[20px] font-bold">EMPLOYEES</h2>
+            <div className="flex justify-center">
+              <span className="flex gap-[5px]">
+                <IoIosPeople className="text-secondary w-[40px] h-[40px]" />
+                <div className="flex justify-center items-center text-Heading text-[20px]">
+                  {employees.length}
+                </div>
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-[10px] p-[10px] bg-variant1-light rounded-[10px]">
+            <h2 className="text-[20px] font-bold">ON LEAVE</h2>
+            <div className="flex justify-center">
+              <span className="flex gap-[5px]"><IoIosPeople className="text-secondary w-[40px] h-[40px]" />
+                <div className="flex justify-center items-center text-Heading text-[20px]">
+                  {employeesOnLeave}
+                </div>
+              </span>
+            </div>
           </div>
         </div>
-  
-        <div className="bg-white shadow-md rounded my-6">
-          <ul className="divide-y divide-gray-200">
-            {employees.map((employee) => (
-              <li key={employee.id} className="py-4 flex">
-                <div className="flex-1">
-                  <p className="font-semibold">{employee.name}</p>
-                  <p className="text-sm text-gray-500">{employee.department}</p>
-                </div>
-                <span className={`ml-2 px-3 py-1 text-xs font-bold rounded-full ${employee.status === 'In Office' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
-                  {employee.status}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
       </div>
-    );
-  };
+      <table className="table-auto">
+        <thead>
+          <tr>
+            <th className="px-4 py-2">Employee</th>
+            <th className="px-4 py-2">Department</th>
+            <th className="px-4 py-2">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {employees.map((employee, index) => (
+            <tr key={index} className={index % 2 === 0 ? 'bg-gray-200' : ''}>
+              <td className="border px-4 py-2">{employee.name}</td>
+              <td className="border px-4 py-2">{employee.department}</td>
+              <td className="border px-4 py-2">{employee.leaves.length > 0 ? 'On Leave' : 'In Office'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
