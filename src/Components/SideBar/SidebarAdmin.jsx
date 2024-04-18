@@ -5,6 +5,7 @@ import reviews from '/src/assets/reviews.png'
 import employees from '/src/assets/employees.png'
 import logo from '/src/assets/logo.png'
 import darkmode from '/src/assets/darkmode.png'
+import { Link } from 'react-router-dom'
 
 export const SidebarAdmin = () => {
   return (
@@ -45,35 +46,35 @@ export const SidebarAdmin = () => {
         <div className="-mt-5 -mx-6 relative overflow-x-hidden h-[85v ">
           <ul className="space-y-4 mb-12 px-4 mt-8">
             <li>
-              <a href="" className="flex -mt-1 text-sm gap-2  font-body hover:text-secondary active:text-secondary transition">
+              <Link to="/admin/dashboard" className="flex -mt-1 text-sm gap-2  font-body hover:text-secondary active:text-secondary transition">
                 <img src={home} alt="" className='w-7 h-7'/>
                 <span className='pt-1'>Dashboard</span>
-              </a>
+              </Link>
             </li>
 
             <li>
-              <a href="" className="flex -mt-1 text-sm gap-2 font-body hover:text-secondary active:text-secondary transition">
+              <Link to="/employees" className="flex -mt-1 text-sm gap-2 font-body hover:text-secondary active:text-secondary transition">
                 <img src={employees} alt=""   className='w-7 h-7'/>
                 <span className='pt-1'>Employees</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="" className="flex -mt-1  text-sm gap-2 font-body hover:text-secondary active:text-secondary transition">
+              <Link to="/hiring" className="flex -mt-1  text-sm gap-2 font-body hover:text-secondary active:text-secondary transition">
                 <img src={hiring} alt=""   className='w-7 h-7'/>
                 <span className='pt-1'>Hiring</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="" className="flex -mt-1  text-sm gap-2 font-body hover:text-secondary active:text-secondary transition">
+              <Link to="/admin/leave" className="flex -mt-1  text-sm gap-2 font-body hover:text-secondary active:text-secondary transition">
                 <img src={leave} alt=""   className='w-7 h-7'/>
                 <span className='pt-1'>Leave</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="" className="flex -mt-1  text-sm gap-2 font-body hover:text-secondary active:text-secondary transition">
+              <Link to="/admin/reviews" className="flex -mt-1  text-sm gap-2 font-body hover:text-secondary active:text-secondary transition">
                 <img src={reviews} alt=""  className='w-7 h-7'/>
                 <span className='pt-1'>Reviews</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
