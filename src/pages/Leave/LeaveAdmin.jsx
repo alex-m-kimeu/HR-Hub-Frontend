@@ -7,7 +7,7 @@ export const LeaveAdmin = () => {
   useEffect(() => {
     const fetchLeaveData = async () => {
       try {
-        const response = await fetch("#api");
+        const response = await fetch("http://127.0.0.1:5500/leave");
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -31,9 +31,18 @@ export const LeaveAdmin = () => {
       <div>
         <h1>Leave</h1>
         <button>Create time off</button>
-        <div>
+        <div className="table">
           <table>
             <thead>
+              <tr>
+                <th>ID</th>
+                <th>Employee</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
               {leaveData.map((item) => (
                 <tr key={item.id}>
                   <td>{item.id}</td>
@@ -43,7 +52,7 @@ export const LeaveAdmin = () => {
                   <td>{item.status}</td>
                 </tr>
               ))}
-            </thead>
+            </tbody>
           </table>
         </div>
       </div>
