@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+//import DatePicker from "react-datepicker";
+//import "react-datepicker/dist/react-datepicker.css";
+import { jwtDecode } from "jwt-decode";
 
 export const LeaveEmployee = () => {
-  const [leaveData, setLeaveData] = useState([]);
+  const [leave, setLeave] = useState([]);
   const [error, setError] = useState(null);
   const [leaveType, setLeaveType] = useState("");
   const [startDate, setStartDate] = useState(null);
@@ -11,76 +12,77 @@ export const LeaveEmployee = () => {
   const [totalLeaveDays, setTotalLeaveDays] = useState(30);
   const [remainingLeaveDays, setRemainingLeaveDays] = useState(30);
 
-  useEffect(() => {
-    const fetchLeaveData = async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:5500/leave", {
-          method: "GET",
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        setLeaveData(data);
-      } catch (error) {
-        setError(error.message);
-      }
-    };
+ useEffect(() => {
+   const token = localStorage.getItem("token");
+   const decodedToken = jwtDecode(token);
+   const userId = decodedToken.sub.id;
 
-    fetchLeaveData();
-  }, []);
+   fetch("http://127.0.0.1:5500/leave", {
+     headers: {
+       Authorization: `Bearer ${token}`,
+     },
+   })
+     .then((response) => response.json())
+     .then((data) => {
+       const user = leave.filter((leave) => leave.id === userId);
+       setLeave(user);
+     })
+     .catch((error) => console.error("Error:", error));
+ }, []);
 
-  useEffect(() => {
-    if (startDate && endDate) {
-      const diffTime = Math.abs(endDate - startDate);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      setRemainingLeaveDays(totalLeaveDays - diffDays);
-    }
-  }, [startDate, endDate, totalLeaveDays]);
+ useEffect(() => {
+   if (startDate && endDate) {
+     const diffTime = Math.abs(endDate - startDate);
+     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+     setRemainingLeaveDays(totalLeaveDays - diffDays);
+   }
+ }, [startDate, endDate, totalLeaveDays]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+   e.preventDefault();
 
-    const formData = {
-      leaveType: leaveType,
-      startDate: startDate,
-      endDate: endDate,
-    };
+   const token = localStorage.getItem("token");
 
-    try {
-      const response = await fetch("http://127.0.0.1:5500/leave", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+   const formData = {
+     leaveType: leaveType,
+     startDate: startDate,
+     endDate: endDate,
+   };
 
-      if (!response.ok) {
-        throw new Error("Failed to submit leave application");
-      } else {
-        alert("Leave application submitted successfully!");
-      }
-    } catch (error) {
-      console.error("Error:", error.message);
-      alert("Failed to submit leave application. Please try again later.");
-    }
+   try {
+     const response = await fetch("http://127.0.0.1:5500/employees", {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+         Authorization: `Bearer ${token}`,
+       },
+       body: JSON.stringify(formData),
+     });
 
-    // Reset form fields after submission
-    setLeaveType("");
-    setStartDate(null);
-    setEndDate(null);
-  };
+     if (!response.ok) {
+       throw new Error("Network response was not ok");
+     }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+     const data = await response.json();
+     console.log(data);
+   } catch (error) {
+     console.error(
+       "There has been a problem with your fetch operation:",
+       error
+     );
+   }
+
+   setLeaveType("");
+   setStartDate(null);
+   setEndDate(null);
+ };
+
 
   return (
     <div className="Main container">
       <div className="Tables container">
         <div className="table-heading">
-          <h1 className="text lg font-extrabold">My Applications</h1>
+          <h1 className="text-2xl font-extrabold">My Applications</h1>
         </div>
         <div className="table">
           <table>
@@ -94,7 +96,7 @@ export const LeaveEmployee = () => {
               </tr>
             </thead>
             <tbody>
-              {leaveData.map((item) => (
+              {leave.map((item) => (
                 <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>{item.employee}</td>
@@ -132,21 +134,21 @@ export const LeaveEmployee = () => {
                 </select>
               </div>
               <div className="mb-4">
-                <DatePicker
+                <input
                   id="startDate"
-                  placeholderText="Start Date"
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
+                  placeholder="Start Date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  type="date"
                   className="border border-gray-300 rounded-md px-3 py-2  w-full"
                   required
                 />
-              </div>
-              <div className="mb-4">
-                <DatePicker
+                <input
                   id="endDate"
-                  placeholderText="End Date"
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date)}
+                  placeholder="End Date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  type="date"
                   className="border border-gray-300 rounded-md px-3 py-2  w-full"
                   required
                 />
