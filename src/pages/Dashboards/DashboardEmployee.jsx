@@ -23,7 +23,7 @@ export const DashboardEmployee = () => {
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center space-y-10 min-h-screen">
+        <div className="flex flex-col items-center justify-center space-y-10 h-screen overflow-auto">
             {employee ? (
                 <>
                     <h1 className='text-Heading text-[20px] font-bold'>Welcome {employee.name}</h1>
