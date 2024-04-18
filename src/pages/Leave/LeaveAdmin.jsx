@@ -50,3 +50,6 @@ export const LeaveAdmin = () => {
     </div>
   );
 };
+
+
+//change .status to actions in the table head
