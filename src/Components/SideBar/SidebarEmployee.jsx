@@ -2,7 +2,6 @@ import home from '/src/assets/home.png'
 import leave from '/src/assets/leave.png'
 import reviews from '/src/assets/reviews.png'
 import logo from '/src/assets/logo.png'
-import avatar from '/src/assets/avatar.png'
 import darkmode from '/src/assets/darkmode.png'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react';
