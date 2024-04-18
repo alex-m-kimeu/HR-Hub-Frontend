@@ -28,17 +28,27 @@ export const Login = () => {
             }
 
             const data = await response.json();
-            localStorage.setItem('token', data.access_token);
-            localStorage.setItem('refreshToken', data.refresh_token);
-            const decodedToken = jwtDecode(data.access_token);
-            localStorage.setItem('role', decodedToken.sub.role);
+            if (data.access_token) {
+                localStorage.setItem('token', data.access_token);
+                localStorage.setItem('refreshToken', data.refresh_token);
+                let decodedToken;
+                try {
+                    decodedToken = jwtDecode(data.access_token);
+                } catch (error) {
+                    console.error("Invalid token", error);
+                    return;
+                }
+                localStorage.setItem('role', decodedToken.sub.role);
 
-            if (decodedToken.sub.role === 'admin') {
-                navigate('/admin/dashboard');
-            } else if (decodedToken.sub.role === 'employee') {
-                navigate('/employee/dashboard');
+                if (decodedToken.sub.role === 'admin') {
+                    navigate('/admin/dashboard');
+                } else if (decodedToken.sub.role === 'employee') {
+                    navigate('/employee/dashboard');
+                } else {
+                    throw new Error('Invalid role');
+                }
             } else {
-                throw new Error('Invalid role');
+                console.error('Access token is missing in the response');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -70,9 +80,15 @@ export const Login = () => {
 
     // Call refreshToken function when access token is expired
     const token = localStorage.getItem('token');
-    const decodedToken = jwtDecode(token);
-    if (decodedToken.exp < Date.now() / 1000) {
-        refreshToken();
+    if (token) {
+        try {
+            const decodedToken = jwtDecode(token);
+            if (decodedToken.exp < Date.now() / 1000) {
+                refreshToken();
+            }
+        } catch (error) {
+            console.error("Invalid token", error);
+        }
     }
 
     return (
