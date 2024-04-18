@@ -6,7 +6,9 @@ import { Login } from './pages/Login/Login';
 
 function App() {
   return (
-    <Router>
+    <Router       
+      basename={import.meta.env.DEV ? '/' : '/HR-Hub-Frontend/'}
+    >
       <Routes>
         <Route path="/signin" element={<Login />} /> 
         <Route path="/" element={<Navigate to="/signin" />} />
