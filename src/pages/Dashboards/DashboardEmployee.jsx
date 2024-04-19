@@ -4,8 +4,6 @@ import { jwtDecode } from 'jwt-decode';
 export const DashboardEmployee = () => {
     const [employee, setEmployee] = useState(null);
 
-    
-
     useEffect(() => {
         const token = localStorage.getItem('token');
         const decodedToken = jwtDecode(token);
