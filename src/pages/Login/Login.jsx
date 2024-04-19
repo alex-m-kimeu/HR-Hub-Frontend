@@ -13,7 +13,7 @@ export const Login = () => {
         const refreshToken = localStorage.getItem('refreshToken');
 
         try {
-            const response = await fetch('http://127.0.0.1:5500/refresh-token', {
+            const response = await fetch('https://hr-hub-backend.onrender.com/refresh-token', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${refreshToken}`
@@ -50,7 +50,7 @@ export const Login = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch('http://127.0.0.1:5500/signin', {
+            const response = await fetch('https://hr-hub-backend.onrender.com/signin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

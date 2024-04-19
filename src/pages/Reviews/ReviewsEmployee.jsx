@@ -10,7 +10,7 @@ export const ReviewsEmployee = () => {
     }, []);
 
     const fetchReviews = (token) => {
-        fetch('http://127.0.0.1:5500/reviews', {
+        fetch('https://hr-hub-backend.onrender.com/reviews', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
