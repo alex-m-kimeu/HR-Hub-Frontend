@@ -6,7 +6,7 @@ export const EmployeeTable = ({ employee, onDelete }) => {
   function handleDelete() {
     const token = localStorage.getItem('token')
     
-    fetch(`http://127.0.0.1:5500/employee/${employee.id}`, {
+    fetch(`https://hr-hub-backend.onrender.com/employee/${employee.id}`, {
     method: "DELETE",
     headers: {
       'Authorization': `Bearer ${token}`,

@@ -8,7 +8,7 @@ export const DashboardAdmin = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    fetch("http://127.0.0.1:5500/employees", {
+    fetch("https://hr-hub-backend.onrender.com/employees", {
       headers: {
         'Authorization': 'Bearer ' + token,
       }

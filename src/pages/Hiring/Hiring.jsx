@@ -21,7 +21,7 @@ export const Hiring = () => {
   
     const token = localStorage.getItem('token');
   
-    fetch("http://127.0.0.1:5500/employees", {
+    fetch("https://hr-hub-backend.onrender.com/employees", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -34,10 +34,6 @@ export const Hiring = () => {
         throw new Error('Network response was not ok');
       }
       return resp.json();
-    })
-    .then((data) => {
-      // Do something with the response data
-      console.log(data);
     })
     .catch((error) => {
       console.error('There has been a problem with your fetch operation:', error);

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import reviewsImage from '../../assets/reviews.png';
 
 export const ReviewsAdmin = () => {
@@ -13,7 +12,7 @@ export const ReviewsAdmin = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        fetch("http://127.0.0.1:5500/employees", {
+        fetch("https://hr-hub-backend.onrender.com/employees", {
             headers: {
                 'Authorization': 'Bearer ' + token,
             }
@@ -32,7 +31,7 @@ export const ReviewsAdmin = () => {
         e.preventDefault();
         const token = localStorage.getItem('token')
 
-        fetch("http://127.0.0.1:5500/reviews", {
+        fetch("https://hr-hub-backend.onrender.com/reviews", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
