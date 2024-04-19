@@ -4,14 +4,27 @@ import { IoTrashBin } from "react-icons/io5";
 export const EmployeeTable = ({ employee, onDelete }) => {
   // Delete employee
   function handleDelete() {
-    fetch(`http://127.0.0.1:5500/${employee.id}`, {
-      method: "DELETE",
+    const token = localStorage.getItem('token')
+    
+    fetch(`http://127.0.0.1:5500/employee/${employee.id}`, {
+    method: "DELETE",
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        onDelete(employee.id);
     })
-    onDelete(employee.id);
-  }
+    .catch(error => {
+        console.error('There was a problem with the fetch operation: ', error);
+    });
+}
 
   return (
-    <tr key={employee.id} className="bg-white dark:bg-dark border-[6px] border-white dark:border-dark3">
+    <tr key={employee.id} className="bg-white border-[6px] border-white">
       <td className="p-[10px]">{employee.id}</td>
       <td className="p-[10px]">
         <img
@@ -24,10 +37,9 @@ export const EmployeeTable = ({ employee, onDelete }) => {
       <td className="p-[10px]">{employee.email}</td>
       <td className="p-[10px]">{employee.department}</td>
       <td className="p-[10px]">{employee.role}</td>
-      <td className="p-[10px]">{employee.gender}</td>
-      <td className="p-[10px]">
+      <td className="p-[10px] flex items-center justify-center">
         <button onClick={handleDelete}>
-          <IoTrashBin className="fill-[#FF3C5F] flex items-center ml-6" />
+          <IoTrashBin className="fill-Red" />
         </button>
       </td>
     </tr>
