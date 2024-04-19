@@ -78,7 +78,7 @@ export const ReviewsAdmin = () => {
                     <div className="bg-white p-4 rounded shadow-lg max-w-full sm:max-w-md w-full">
                         <h2 className="mb-2 text-2xl font-bold text-center text-Heading">Add Review</h2>
                         <form onSubmit={handleSubmit}>
-                            <textarea id="description" value={formData.description} onChange={handleChange} className="w-full mb-2 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            <textarea id="description" value={formData.description} onChange={handleChange} className="w-full mb-2 p-2 border rounded focus:outline-none"></textarea>
                             <div className="flex justify-end gap-2">
                                 <button type="submit" className="bg-secondary text-white px-4 py-2 rounded hover:cursor-pointer">Submit</button>
                                 <button type="button" onClick={() => setShowModal(false)} className="bg-variant1-light px-4 py-2 rounded hover:cursor-pointer">Cancel</button>
