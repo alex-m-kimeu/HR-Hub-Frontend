@@ -4,11 +4,11 @@ export const ReviewsEmployee = () => {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
-    const [newReview, setNewReview] = useState(""); // State to store the new review text
+    const [newReview, setNewReview] = useState("");
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        fetchReviews(token); // Fetch reviews when the component mounts
+        fetchReviews(token); 
     }, []);
 
     const fetchReviews = (token) => {
@@ -38,16 +38,16 @@ export const ReviewsEmployee = () => {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ text: newReview }) // Send the new review text
+            body: JSON.stringify({ text: newReview })
         })
         .then(response => response.json())
         .then(data => {
-            console.log("Data returned from backend:", data); // Log the data returned from backend
+            console.log("Data returned from backend:", data);
             
-            // Update the reviews state with the new review
+            
             setReviews([...reviews, { id: data.id, text: data.text }]);
-            setShowModal(false); // Close the modal
-            setNewReview(""); // Clear the new review text
+            setShowModal(false); 
+            setNewReview(""); 
         })
         .catch(error => console.error('Error:', error));
     };
@@ -64,7 +64,6 @@ export const ReviewsEmployee = () => {
                         reviews.map(review => (
                             <div key={review.id} className="bg-gray-100 p-4 rounded-md shadow-md">
                                 <p className="text-lg font-semibold">{review.text}</p>
-                                {/* Add other review details here */}
                             </div>
                         ))
                     ) : (
@@ -80,7 +79,6 @@ export const ReviewsEmployee = () => {
                 Add New Review
             </button>
 
-            {/* Modal for adding a review */}
             {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="absolute inset-0 bg-gray-900 opacity-50" onClick={() => setShowModal(false)}></div>
