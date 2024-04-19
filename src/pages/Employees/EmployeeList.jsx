@@ -4,14 +4,14 @@ import { EmployeeCard } from "./EmployeeCard";
 
 export const EmployeesList = ({ employees, onDelete }) => {
   return (
-    <div className="flex min-h-screen pb-12 ">
+    <div className="flex h-auto font-body">
       <div className="relative overflow-x-auto w-full">
         <div className="sm:hidden flex flex-wrap justify-center gap-4">
           {employees.map((employee) => {
             return <EmployeeCard key={employee.id} employee={employee} onDelete={onDelete} />;
           })}
         </div>
-        <table className="hidden sm:table w-full mx-auto text-left font-sans text-Heading">
+        <table className="hidden sm:table w-full mx-auto text-left text-Heading">
           <thead className="text-[18px] font-body bg-secondary text-white">
             <tr className="border-[6px] border-white">
               <th className="p-[10px]" >ID</th>
