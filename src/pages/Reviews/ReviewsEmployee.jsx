@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 export const ReviewsEmployee = () => {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [showModal, setShowModal] = useState(false);
-    const [newReview, setNewReview] = useState("");
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -25,79 +23,22 @@ export const ReviewsEmployee = () => {
         .catch(error => console.error('Error:', error));
     };
 
-    const handleAddReview = () => {
-        setShowModal(true);
-    };
-
-    const handleSubmitReview = () => {
-        const token = localStorage.getItem('token');
-
-        fetch('http://127.0.0.1:5500/reviews', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ text: newReview })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Data returned from backend:", data);
-            
-            
-            setReviews([...reviews, { id: data.id, text: data.text }]);
-            setShowModal(false); 
-            setNewReview(""); 
-        })
-        .catch(error => console.error('Error:', error));
-    };
-
     return (
-        <div className="flex flex-col items-center justify-center space-y-10 h-screen overflow-auto">
-            <h1 className='text-Heading text-[20px] font-bold'>Reviews</h1>
-            
+        <div className="flex flex-col items-center justify-center space-y-10 h-screen overflow-auto px-4 md:px-0 font-body">
+            <h1 className='text-2xl md:text-4xl font-bold text-Heading'>My Reviews</h1>
             {loading ? (
-                <p>Loading...</p>
+                <p className="text-lg md:text-xl">Loading...</p>
             ) : (
-                <div className="flex flex-col items-center justify-center space-y-5">
+                <div className="flex flex-col items-center justify-center space-y-5 w-full md:w-1/2">
                     {reviews.length > 0 ? (
                         reviews.map(review => (
-                            <div key={review.id} className="bg-gray-100 p-4 rounded-md shadow-md">
-                                <p className="text-lg font-semibold">{review.text}</p>
+                            <div key={review.id} className="bg-variant1-light p-4 rounded-md w-full">
+                                <p className="text-md md:text-lg font-normal text-Heading">{review.description}</p>
                             </div>
                         ))
                     ) : (
-                        <p>No reviews found.</p>
+                        <p className="text-lg md:text-xl">No reviews currently.</p>
                     )}
-                </div>
-            )}
-
-            <button
-                className='bg-secondary text-primary-light px-[10px] py-[10px] rounded-[8px]'
-                onClick={handleAddReview}
-            >
-                Add New Review
-            </button>
-
-            {showModal && (
-                <div className="fixed inset-0 flex items-center justify-center z-50">
-                    <div className="absolute inset-0 bg-gray-900 opacity-50" onClick={() => setShowModal(false)}></div>
-                    <div className="bg-white p-6 rounded-lg shadow-lg z-10">
-                        <h2 className="text-lg font-semibold mb-4">Add Review</h2>
-                        <textarea
-                            className="w-full p-2 border rounded-md mb-4"
-                            placeholder="Enter your review..."
-                            rows="4"
-                            value={newReview}
-                            onChange={(e) => setNewReview(e.target.value)}
-                        ></textarea>
-                        <button
-                            className="bg-secondary text-primary-light px-4 py-2 rounded-md"
-                            onClick={handleSubmitReview}
-                        >
-                            Submit
-                        </button>
-                    </div>
                 </div>
             )}
         </div>
