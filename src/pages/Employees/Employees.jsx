@@ -31,8 +31,8 @@ export const Employees = () => {
   }
 
   return (
-    <div className="px-4 sm:px-28 dark:bg-variant1-dark">
-      <h2 className="text-Heading font-sans font-extrabold text-2xl text-left py-5">
+    <div className="px-4 sm:px-28 font-body">
+      <h2 className="text-Heading font-bold text-2xl text-left py-5">
         Employees
       </h2>
       <Search search={search} setSearch={setSearch} />

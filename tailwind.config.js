@@ -17,7 +17,7 @@ export default {
         'variant1-light': '#F3F4F6',
         'variant1-dark': '#323434',
         'Heading': '#4B5563',
-        'red': '#FF3C5F'
+        'Red': '#FF3C5F'
       },
       fontFamily:{
         'body':"Open Sans"
