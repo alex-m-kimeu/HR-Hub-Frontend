@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import logo from "../../assets/logo.png";
@@ -8,10 +8,9 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    // Function to refresh token
-    const refreshToken = async () => {
+    const refreshToken = useRef(async () => {
         const refreshToken = localStorage.getItem('refreshToken');
-
+    
         try {
             const response = await fetch('https://hr-hub-backend.onrender.com/refresh-token', {
                 method: 'POST',
@@ -19,27 +18,28 @@ export const Login = () => {
                     'Authorization': `Bearer ${refreshToken}`
                 }
             });
-
+    
             if (!response.ok) {
                 throw new Error('Error: ' + response.statusText);
             }
-
+    
             const data = await response.json();
             localStorage.setItem('token', data.access_token);
+            if (data.refresh_token) {
+                localStorage.setItem('refreshToken', data.refresh_token);
+            }
         } catch (error) {
             console.error('Error:', error);
         }
-    };
-
+    });
+    
     useEffect(() => {
-        // Call refreshToken function when access token is expired
         const token = localStorage.getItem('token');
         if (token) {
             try {
                 const decodedToken = jwtDecode(token);
-                if (decodedToken.exp < Date.now() / 1000) {
-                    refreshToken();
-                }
+                const expiresIn = decodedToken.exp * 1000 - new Date().getTime();
+                setTimeout(refreshToken, expiresIn - 60000);
             } catch (error) {
                 console.error("Invalid token", error);
             }
