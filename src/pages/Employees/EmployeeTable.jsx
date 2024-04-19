@@ -24,7 +24,7 @@ export const EmployeeTable = ({ employee, onDelete }) => {
 }
 
   return (
-    <tr key={employee.id} className="bg-white border-[6px] border-white">
+    <tr key={employee.id} className="bg-white dark:bg-variant1-dark border-[6px] border-white dark:border-primary-dark">
       <td className="p-[10px]">{employee.id}</td>
       <td className="p-[10px]">
         <img
