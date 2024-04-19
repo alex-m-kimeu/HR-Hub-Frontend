@@ -55,7 +55,7 @@ export const ReviewsAdmin = () => {
 
     return (
         <div>
-            <div className="flex items-center justify-center mb-4">
+            <div className="flex items-center justifemployeesy-center mb-4">
                 <img src={reviewsImage} alt="Reviews" className="w-10 h-10 mr-4" />
                 <h1 className="text-4xl font-bold text-Heading">Reviews</h1>
             </div>

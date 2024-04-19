@@ -12,10 +12,10 @@ export default {
       },
       colors: {
         'primary-light': '#FFFFFF',
-        'primary-dark': '#3F4040',
+        'primary-dark': '#3f4040',
         'secondary': '#48937e',
         'variant1-light': '#F3F4F6',
-        'variant1-dark': '#323434',
+        'variant1-dark': '#2d2e2e',
         'Heading': '#4B5563',
         'Red': '#FF3C5F'
       },

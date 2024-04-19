@@ -2,12 +2,14 @@ import home from '/src/assets/home.png'
 import leave from '/src/assets/leave.png'
 import reviews from '/src/assets/reviews.png'
 import logo from '/src/assets/logo.png'
-import darkmode from '/src/assets/darkmode.png'
+import { GoSun } from "react-icons/go";
+import { IoMoonOutline } from "react-icons/io5";
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
 export const SidebarEmployee = () => {
+  const navigate = useNavigate();
   const [employee, setEmployee] = useState(null);
 
   useEffect(() => {
@@ -28,14 +30,29 @@ export const SidebarEmployee = () => {
       .catch(error => console.error('Error:', error));
   }, []);
 
-  const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("role"); 
     navigate("/signin");
   };
 
+  const [darkMode, setDarkMode] = useState(() => {
+    const localData = localStorage.getItem("darkMode");
+    return localData ? JSON.parse(localData) : false;
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+  }, [darkMode]);
+
   return (
-    <div className='bg-variant1-light w-[245px] h-screen flex flex-col p-[20px] justify-between font-body'>
+    <div className='bg-variant1-light dark:bg-variant1-dark w-[245px] h-screen flex flex-col p-[20px] justify-between font-body'>
       <div className='gap-[50px] '>
         <div className='flex flex-col items-center gap-[20px]'>
           <img src={logo} alt="logo" className="w-[130px] h-[64px] max-w-full" />
@@ -89,10 +106,23 @@ export const SidebarEmployee = () => {
           )}
         </div>
         <div className='flex gap-[30px]'>
-          <span className='flex flex-row items-center justify-center gap-[5px] text-[15px]'>
-            <img className='w-[30px] h-[30px]' src={darkmode} alt="darkmode" />
-            Dark
-          </span>
+          {darkMode ? (
+            <button className='flex flex-row items-center justify-center gap-[5px] text-[15px] hover:cursor-pointer'>
+              <GoSun
+                className="w-[30px] h-[30px] fill-green hover:cursor-pointer hover:fill-green"
+                onClick={() => setDarkMode(false)}
+              />
+              Light
+            </button>
+          ) : (
+            <button className='flex flex-row items-center justify-center gap-[5px] text-[15px] hover:cursor-pointer'>
+              <IoMoonOutline
+                className="w-[30px] h-[30px] fill-green hover:cursor-pointer hover:fill-green"
+                onClick={() => setDarkMode(true)}
+              />
+              Dark
+            </button>
+          )}
           <button className='bg-secondary text-black hover:cursor-pointer hover:text-white px-[10px] py-[5px] rounded-[5px] text-[15px]' onClick={handleLogout}>Logout</button>
         </div>
       </div>
