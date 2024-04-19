@@ -18,10 +18,10 @@ export const Hiring = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-  
+
     const token = localStorage.getItem('token');
-  
-    fetch("http://127.0.0.1:5500/employees", {
+
+    fetch("https://hr-hub-backend.onrender.com/employees", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,20 +29,16 @@ export const Hiring = () => {
       },
       body: JSON.stringify(formData),
     })
-    .then((resp) => {
-      if (!resp.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return resp.json();
-    })
-    .then((data) => {
-      // Do something with the response data
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error('There has been a problem with your fetch operation:', error);
-    });
-  
+      .then((resp) => {
+        if (!resp.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return resp.json();
+      })
+      .catch((error) => {
+        console.error('There has been a problem with your fetch operation:', error);
+      });
+
     setFormData({
       name: "",
       email: "",
@@ -58,10 +54,10 @@ export const Hiring = () => {
       <div className=" max-w-md">
         <div className="flex items-center justify-center mb-[20px]">
           <img src={hiringImage} alt="Hiring" className="w-[40px] h-[40px] mr-4" />
-          <h1 className="text-4xl font-bold text-Heading">Hiring</h1>
+          <h1 className="text-2xl font-bold text-Heading dark:text-primary-light">Hiring</h1>
         </div>
-        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-10 pb-8">
-          <h3 className="text-lg text-center font-bold mb-4 text-Heading">Add new hire</h3>
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-variant1-dark shadow-md rounded p-5 w-[350px]">
+          <h3 className="text-lg text-center font-bold mb-2 text-Heading dark:text-secondary">Add new hire</h3>
           <div className="flex flex-col space-y-4">
             <input
               id="name"
@@ -70,7 +66,7 @@ export const Hiring = () => {
               placeholder="Employee's Name"
               value={formData.name}
               onChange={handleChange}
-              className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
               required
             />
             <input
@@ -80,7 +76,7 @@ export const Hiring = () => {
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
-              className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
               required
             />
             <input
@@ -90,12 +86,12 @@ export const Hiring = () => {
               placeholder="Department"
               value={formData.department}
               onChange={handleChange}
-              className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
               required
             />
             <select
               id="role"
-              className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
               value={formData.role}
               onChange={handleChange}
               required
@@ -110,20 +106,23 @@ export const Hiring = () => {
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
               required
             />
             <input
               id="image"
               type="text"
               name="image"
-              placeholder="Image Url"
+              placeholder="Image URL"
               value={formData.image}
               onChange={handleChange}
-              className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
               required
             />
-            <button type="submit" className="bg-secondary hover:bg-secondary-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <button
+              type="submit"
+              className="bg-secondary hover:bg-secondary-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
               Add
             </button>
           </div>

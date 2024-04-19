@@ -4,14 +4,15 @@ import { jwtDecode } from 'jwt-decode';
 export const DashboardEmployee = () => {
     const [employee, setEmployee] = useState(null);
 
-    
-
     useEffect(() => {
         const token = localStorage.getItem('token');
+        console.log(token);
         const decodedToken = jwtDecode(token);
+        console.log(decodedToken);
         const userId = decodedToken.sub.id;
+        console.log(userId);
 
-        fetch('http://127.0.0.1:5500/employees', {
+        fetch('https://hr-hub-backend.onrender.com/employees', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

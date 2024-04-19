@@ -9,7 +9,7 @@ export const Employees = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    fetch("http://127.0.0.1:5500/employees", {
+    fetch("https://hr-hub-backend.onrender.com/employees", {
       headers: {
         'Authorization': 'Bearer ' + token,
       }})
@@ -31,8 +31,8 @@ export const Employees = () => {
   }
 
   return (
-    <div className="px-4 sm:px-28 dark:bg-variant1-dark">
-      <h2 className="text-Heading font-sans font-extrabold text-2xl text-left py-5">
+    <div className="font-body">
+      <h2 className="text-Heading dark:text-primary-light font-bold text-2xl text-center lg:text-left py-5">
         Employees
       </h2>
       <Search search={search} setSearch={setSearch} />

@@ -22,17 +22,19 @@ export const Layout = ({ Sidebar, children }) => {
 
     return (
         <div className={`relative h-screen overflow-auto ${isLargeScreen ? 'flex' : ''}`}>
-            <button onClick={handleSidebarToggle} className="absolute right-0 z-20 p-2 md:hidden">
-                {isSidebarOpen ? <FaTimes /> : <FaBars />}
+            <button onClick={handleSidebarToggle} className="absolute right-0 z-20 p-3 lg:hidden">
+                {isSidebarOpen ? <FaTimes className='fill-secondary'/> : <FaBars className='fill-secondary' />}
             </button>
             {(isSidebarOpen || isLargeScreen) && (
-                <div className={`z-10 w-full md:w-64 bg-white ${isLargeScreen ? 'relative' : 'absolute'}`}>
+                <div className={`z-10 w-full lg:w-64 bg-white ${isLargeScreen ? 'relative' : 'absolute'}`}>
                     {Sidebar && <Sidebar />}
                 </div>
             )}
-            <div className="flex-grow px-4 md:px-[50px] py-4 md:py-[20px]">
-                {children}
-            </div>
+            {!isSidebarOpen || isLargeScreen ? (
+                <div className="flex-grow px-4 lg:px-[50px] py-4 lg:py-[20px] dark:bg-primary-dark">
+                    {children}
+                </div>
+            ) : null}
         </div>
     );
 };

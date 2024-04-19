@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-//import DateInput from "/components/DateInput"
+import DatePicker from "react-datepicker";
+
 import { jwtDecode } from "jwt-decode";
 
 export const LeaveEmployee = () => {
