@@ -50,7 +50,7 @@ export const LeaveEmployee = () => {
    };
 
    try {
-     const response = await fetch("http://127.0.0.1:5500/employees", {
+     const response = await fetch("http://127.0.0.1:5500/leave", {
        method: "POST",
        headers: {
          "Content-Type": "application/json",
@@ -82,22 +82,24 @@ export const LeaveEmployee = () => {
     <div className="Main container">
       <div className="Tables container">
         <div className="table-heading">
-          <h1 className="text-2xl font-extrabold">My Applications</h1>
+          <h1 className="text-Heading text-[30px] font-bold">
+            My Applications
+          </h1>
         </div>
         <div className="table">
           <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Employee</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Status</th>
+            <thead className="text-[18px] font-normal bg-secondary text-white">
+              <tr className="border-[6px] border-white">
+                <th className="p-[10px]">ID</th>
+                <th className="p-[10px]">Employee</th>
+                <th className="p-[10px]">Start Date</th>
+                <th className="p-[10px]">End Date</th>
+                <th className="p-[10px]">Status</th>
               </tr>
             </thead>
-            <tbody>
-              {leave.map((item) => (
-                <tr key={item.id}>
+            <tbody className="text-[16px] font-normal text-Heading">
+              {leave.map((leave, index) => (
+                <tr key={index} className="bg-white border-[6px] border-white">
                   <td>{item.id}</td>
                   <td>{item.employee}</td>
                   <td>{item.startDate}</td>
@@ -156,8 +158,7 @@ export const LeaveEmployee = () => {
               <div className="flex justify-center">
                 <button
                   type="submit"
-                  className="bg-green-500 text-white px-4 py-2 rounded-md"
-                >
+                  className="bg-secondary text-white px-4 py-2 rounded-md">
                   Submit
                 </button>
               </div>

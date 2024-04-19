@@ -1,47 +1,54 @@
 import React, { useState, useEffect } from "react";
 
 export const LeaveAdmin = () => {
-    const [leave, setLeave] = useState([]);
+    const [leave, setleave] = useState([]);
+    const [showForm, setShowForm] = useState(false); 
+    const [leaveType, setLeaveType] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
     
-  
-   useEffect(() => {
-       const token = localStorage.getItem("token");
+    
+
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+
+      fetch("http://127.0.0.1:5500/", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setleave(data);
+          
+        })
+        .catch((error) => console.error("Error fetching Leave Data:", error));
+    }, []);
+
+   
 
 
-     fetch("http://127.0.0.1:5500/leave", {
-       headers: {
-         Authorization: "Bearer " + token,
-       },
-     })
-       .then((response) => response.json())
-       .then((data) => {
-         const user = data.find((leave) => leave.id === userId);
-         setLeave(user);
-       })
-       .catch((error) => console.error("Error:", error));
-   }, []);
-    
   return (
     <div>
       <div>
-        <h1 className="font-bold text-lg my-5">Leave</h1>
+        <h1 className="text-Heading text-[30px] font-bold">Leave</h1>
         <button type="button" className="my-3 bg-slate-200 rounded-xl p-2">
           Create time off
         </button>
         <div className="table">
           <table>
-            <thead className="space-x-3">
-              <tr>
-                <th>ID</th>
-                <th>Employee</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Status</th>
+            <thead className="text-[18px] font-normal bg-secondary text-white">
+              <tr className="border-[6px] border-white">
+                <th className="p-[10px]">ID</th>
+                <th className="p-[10px]">Employee</th>
+                <th className="p-[10px]">Start Date</th>
+                <th className="p-[10px]">End Date</th>
+                <th className="p-[10px]">Status</th>
               </tr>
             </thead>
-            <tbody>
-              {leave.map((item) => (
-                <tr key={item.id}>
+            <tbody className="text-[16px] font-normal text-Heading">
+              {leave.map((leave, index) => (
+                <tr key={index} className="bg-white border-[6px] border-white">
                   <td>{item.id}</td>
                   <td>{item.employee}</td>
                   <td>{item.startDate}</td>
