@@ -1,6 +1,6 @@
 export const EmployeeCard = ({ employee, onDelete }) => {
     return (
-      <div className="bg-white dark:bg-dark1 shadow-lg rounded-lg p-4 mb-4 flex flex-col items-center text-center w-64 h-92">
+      <div className="bg-white dark:bg-dark1 shadow-lg rounded-lg p-4 mb-4 flex flex-col items-center text-center w-64 h-92 font-body">
         <img src={employee.image} alt={employee.name} className="w-24 h-24 rounded-full object-cover mb-4" />
         <h2 className="text-dark dark:text-green font-sans font-medium text-lg mb-2">
           {employee.name}

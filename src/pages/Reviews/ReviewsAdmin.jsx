@@ -57,7 +57,7 @@ export const ReviewsAdmin = () => {
         <div>
             <div className="flex items-center justifemployeesy-center mb-4">
                 <img src={reviewsImage} alt="Reviews" className="w-10 h-10 mr-4" />
-                <h1 className="text-4xl font-bold text-Heading">Reviews</h1>
+                <h1 className="text-2xl font-bold text-Heading">Reviews</h1>
             </div>
             <div className="flex flex-wrap justify-center gap-[20px]">
                 {employees.map(employee => (

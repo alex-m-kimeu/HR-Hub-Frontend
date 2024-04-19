@@ -54,7 +54,7 @@ export const Hiring = () => {
       <div className=" max-w-md">
         <div className="flex items-center justify-center mb-[20px]">
           <img src={hiringImage} alt="Hiring" className="w-[40px] h-[40px] mr-4" />
-          <h1 className="text-4xl font-bold text-Heading">Hiring</h1>
+          <h1 className="text-2xl font-bold text-Heading">Hiring</h1>
         </div>
         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-10 pb-8">
           <h3 className="text-lg text-center font-bold mb-4 text-Heading">Add new hire</h3>
