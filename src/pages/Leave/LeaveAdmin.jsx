@@ -1,32 +1,52 @@
 import React, { useState, useEffect } from "react";
+import { TiDelete } from "react-icons/ti";
+import { FaCheck } from "react-icons/fa";
 
 export const LeaveAdmin = () => {
-  const [leave, setLeave] = useState([]);
+  const [leaves, setLeave] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [leaveType, setLeaveType] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-useEffect(() => {
-  const token = localStorage.getItem("token");
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-  fetch("http://127.0.0.1:5500/admin/leave-requests", {
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Fetched data:", data); // Log the fetched data
-      if (data.leaveRequests) {
-        setLeave(data.leaveRequests);
-      } else {
-        console.error("Invalid data format:", data);
-      }
+    fetch("https://hr-hub-backend.onrender.com/leaves", {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
     })
-    .catch((error) => console.error("Error fetching Leave Data:", error));
-}, []);
+      .then((resp) => resp.json())
+      .then((data) => { setLeave(data); console.log(data)})
+      .catch((err) => console.log(err));
+  }, []);
 
+  function handleSubmit() {
+    //patch request
+    fetch("https://hr-hub-backend.onrender.com/leave", {
+      method: "PATCH",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((resp) => {
+        if (!resp.ok) {
+          throw new Error("Network response was not ok");
+        }
+        console.log("Feedback was successful");
+        // Handle success, if needed
+      })
+      .catch((error) => {
+        console.error(
+          "There has been a problem with your feedback:",
+          error
+        );
+        // Handle error, if needed
+      });
+
+  }
 
   return (
     <div className="container mx-auto">
@@ -42,21 +62,26 @@ useEffect(() => {
                 <th className="py-2 px-4">Start Date</th>
                 <th className="py-2 px-4">End Date</th>
                 <th className="py-2 px-4">Status</th>
-                
               </tr>
             </thead>
             <tbody>
-              {leave.map((item, index) => (
-                <tr key={index} className="bg-white">
-                  <td className="py-2 px-4">{item.id}</td>
-                  <td className="py-2 px-4">{item.employee}</td>
-                  <td className="py-2 px-4">{item.leaveType}</td>
-                  <td className="py-2 px-4">{item.startDate}</td>
-                  <td className="py-2 px-4">{item.endDate}</td>
-                  <td className="py-2 px-4">{item.status}</td>
-                  
-                </tr>
-              ))}
+              {Array.isArray(leaves) &&
+                leaves.map((item, index) => (
+                  <tr key={index} className="bg-gray-100">
+                    <td className="py-2 px-4">{item.id}</td>
+                    <td className="py-2 px-4">{item.employee}</td>
+                    <td className="py-2 px-4">{item.startDate}</td>
+                    <td className="py-2 px-4">{item.endDate}</td>
+                    <td className="py-2 px-4 space-x-1">
+                      <button onClick={handleSubmit}>
+                        <FaCheck />
+                      </button>
+                      <button onClick={handleSubmit}>
+                        <TiDelete />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
@@ -66,3 +91,13 @@ useEffect(() => {
 };
 
 
+/*  
+ <td className="py-2 px-4 space-x-1">
+                    <button onClick={handleSubmit}>
+                      <FaCheck />
+                    </button>
+                    <button onClick={handleSubmit}>
+                      <TiDelete />
+                    </button>
+                  </td>
+*/
