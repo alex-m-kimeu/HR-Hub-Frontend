@@ -61,7 +61,7 @@ export const SidebarAdmin = () => {
           <hr className='border-[1px] border-secondary w-full' />
         </div>
         <div className='flex flex-col gap-[20px] py-[30px] '>
-          <h1 className="text- font-bold font-body">
+          <h1 className="text- font-bold">
             ADMINISTRATOR
           </h1>
           <div>
@@ -73,25 +73,25 @@ export const SidebarAdmin = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/employees" className='flex gap-[10px]  hover:text-secondary active:text-secondary'>
+                <Link to="/employees" className='flex gap-[10px]  hover:text-secondary'>
                   <img src={employees} alt="" className='w-7 h-7' />
                   <span className='pt-1'>Employees</span>
                 </Link>
               </li>
               <li>
-                <Link to="/hiring" className='flex gap-[10px]  hover:text-secondary active:text-secondary'>
+                <Link to="/hiring" className='flex gap-[10px]  hover:text-secondary'>
                   <img src={hiring} alt="" className='w-7 h-7' />
                   <span className='pt-1'>Hiring</span>
                 </Link>
               </li>
               <li>
-                <Link to="/admin/leave" className='flex gap-[10px]  hover:text-secondary active:text-secondary'>
+                <Link to="/admin/leave" className='flex gap-[10px]  hover:text-secondary'>
                   <img src={leave} alt="" className='w-7 h-7' />
                   <span className='pt-1 text-[15px]'>Leave</span>
                 </Link>
               </li>
               <li>
-                <Link to="/admin/reviews" className='flex gap-[10px]  hover:text-secondary active:text-secondary'>
+                <Link to="/admin/reviews" className='flex gap-[10px]  hover:text-secondary'>
                   <img src={reviews} alt="" className='w-7 h-7' />
                   <span className='pt-1 text-[15px]'>Reviews</span>
                 </Link>
