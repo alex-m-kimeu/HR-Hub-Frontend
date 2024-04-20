@@ -6,11 +6,8 @@ export const DashboardEmployee = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        console.log(token);
         const decodedToken = jwtDecode(token);
-        console.log(decodedToken);
         const userId = decodedToken.sub.id;
-        console.log(userId);
 
         fetch('https://hr-hub-backend.onrender.com/employees', {
             headers: {
