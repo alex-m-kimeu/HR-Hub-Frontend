@@ -50,21 +50,20 @@ export const DashboardAdmin = () => {
           </div>
         </div>
       </div>
-      <table className="w-full mx-auto text-left">
-        <thead className="text-sm lg:text-md font-bold bg-secondary text-white">
-          <tr className="dark:border-primary-dark">
-            <th className="px-[10px] py-[5px] border-r border-gray-400">Employee</th>
-            <th className="px-[10px] py-[5px] border-r border-gray-400">Department</th>
-            <th className="px-[10px] py-[5px]">Status</th>
+      <table className="w-full mx-auto text-left text-Heading">
+        <thead className="text-[18px] font-body bg-secondary dark:bg-variant1-dark text-white dark:text-secondary">
+          <tr className="border-[6px] border-white dark:border-primary-dark">
+            <th className="p-[10px]">Employee</th>
+            <th className="p-[10px]">Department</th>
+            <th className="p-[10px]">Status</th>
           </tr>
         </thead>
-        <tbody className="text-sm lg:text-md font-medium text-Heading">
+        <tbody className="text-[16px] font-normal text-Heading dark:text-white">
           {employees.map((employee, index) => (
-            <tr key={index}
-              className="dark:border-primary-dark dark:bg-primary-dark dark:text-white">
-              <td className="px-[10px] py-[5px] border-r border-gray-400">{employee.name}</td>
-              <td className="px-[10px] py-[5px] border-r border-gray-400">{employee.department}</td>
-              <td className={`px-[10px] py-[5px] ${employee.leaves.length > 0 ? 'text-Red' : 'text-secondary'}`}>
+            <tr key={index} className="bg-white dark:bg-variant1-dark border-[6px] border-white dark:border-primary-dark">
+              <td className="p-[10px]">{employee.name}</td>
+              <td className="p-[10px]">{employee.department}</td>
+              <td className={`p-[10px] ${employee.leaves.length > 0 ? 'text-Red' : 'text-secondary'}`}>
                 {employee.leaves.length > 0 ? 'Leave' : 'Office'}
               </td>
             </tr>

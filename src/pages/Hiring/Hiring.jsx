@@ -5,7 +5,7 @@ export const Hiring = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    department: '',
+    department: 'Administrative ',
     role: 'employee',
     password: '',
     image: ''
@@ -42,7 +42,7 @@ export const Hiring = () => {
     setFormData({
       name: "",
       email: "",
-      department: "",
+      department: "Administrative ",
       role: "employee",
       password: '',
       image: ""
@@ -79,16 +79,22 @@ export const Hiring = () => {
               className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
               required
             />
-            <input
+            <select
               id="department"
-              type="text"
-              name="department"
-              placeholder="Department"
+              className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
               value={formData.department}
               onChange={handleChange}
-              className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
               required
-            />
+            >
+              <option value="Administrative ">Administrative </option>
+              <option value="HR">HR</option>
+              <option value="IT">IT</option>
+              <option value="Finance">Finance</option>
+              <option value="Operations">Operations</option>
+              <option value="Sales">Sales</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Accounting">Accounting</option>
+            </select>
             <select
               id="role"
               className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
@@ -96,8 +102,8 @@ export const Hiring = () => {
               onChange={handleChange}
               required
             >
-              <option value="employee">employee</option>
-              <option value="admin">admin</option>
+              <option value="employee">Employee</option>
+              <option value="admin">Admin</option>
             </select>
             <input
               id="password"
