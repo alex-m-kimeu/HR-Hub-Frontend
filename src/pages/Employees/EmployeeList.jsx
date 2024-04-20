@@ -19,7 +19,7 @@ export const EmployeesList = ({ employees, onDelete }) => {
               <th className="p-[10px]" >Email Address</th>
               <th className="p-[10px]" >Department</th>
               <th className="p-[10px]" >Role</th>
-              <th className="p-[10px]" >Actions</th>
+              <th className="p-[10px] flex justify-center items-center" >Actions</th>
             </tr>
           </thead>
           <tbody className="text-[16px] font-normal text-Heading dark:text-white">

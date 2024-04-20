@@ -37,7 +37,7 @@ export const EmployeeTable = ({ employee, onDelete }) => {
       <td className="p-[10px]">{employee.email}</td>
       <td className="p-[10px]">{employee.department}</td>
       <td className="p-[10px]">{employee.role}</td>
-      <td className="p-[10px] flex items-center justify-center">
+      <td className="p-[10px] flex justify-center items-center">
         <button onClick={handleDelete}>
           <IoTrashBin className="fill-Red" />
         </button>

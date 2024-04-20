@@ -1,26 +1,43 @@
 import { useEffect, useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 import reviewsImage from '../../assets/reviews.png';
 
 export const ReviewsAdmin = () => {
     const [employees, setEmployees] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [showReviewsModal, setShowReviewsModal] = useState(false);
     const [formData, setFormData] = useState({
         description: '',
     });
-    const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
+    const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        const decodedToken = jwtDecode(token);
+        const currentUserId = decodedToken.sub.id;
 
         fetch("https://hr-hub-backend.onrender.com/employees", {
             headers: {
-                'Authorization': 'Bearer ' + token,
+                'Authorization': `Bearer ${token}`
             }
         })
             .then((resp) => resp.json())
-            .then((data) => setEmployees(data))
+            .then((data) => {
+                const filteredData = data.filter(employee => employee.id !== currentUserId);
+                setEmployees(filteredData);
+            })
             .catch((err) => console.log(err));
     }, []);
+
+    useEffect(() => {
+        if (selectedEmployee) {
+            fetch(`https://hr-hub-backend.onrender.com/reviews/${selectedEmployee.id}`)
+                .then(response => response.json())
+                .then(data => setReviews(data))
+                .catch(error => console.error('Error:', error));
+        }
+    }, [selectedEmployee]);
 
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -38,7 +55,7 @@ export const ReviewsAdmin = () => {
                 "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({
-                employee_id: selectedEmployeeId,
+                employee_id: selectedEmployee.id,
                 description: formData.description,
             }),
         })
@@ -55,29 +72,12 @@ export const ReviewsAdmin = () => {
 
     return (
         <div>
-            <div className="flex items-center justifemployeesy-center mb-4">
-                <img src={reviewsImage} alt="Reviews" className="w-10 h-10 mr-4" />
-                <h1 className="text-2xl font-bold text-Heading">Reviews</h1>
-            </div>
-            <div className="flex flex-wrap justify-center gap-[20px]">
-                {employees.map(employee => (
-                    <div key={employee.id} className="bg-variant1-light rounded-[10px] p-4 flex flex-col items-center text-center w-64 h-92 ">
-                        <img src={employee.image} alt={employee.name} className="w-24 h-24 rounded-full object-cover mb-4" />
-                        <h2 className="text-Heading font-bold text-lg mb-2">{employee.name}</h2>
-                        <p className="text-sm mb-2 text-Heading">{employee.department}</p>
-                        <button
-                            className="bg-secondary text-white px-[10px] py-[5px] rounded-[10px]" onClick={() => { setShowModal(true); setSelectedEmployeeId(employee.id); }}>
-                            Add Review
-                        </button>
-                    </div>
-                ))}
-            </div>
-            {showModal && (
-                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 p-4 sm:p-0">
-                    <div className="bg-white p-4 rounded shadow-lg max-w-full sm:max-w-md w-full">
-                        <h2 className="mb-2 text-2xl font-bold text-center text-Heading">Add Review</h2>
+            {showModal ? (
+                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center">
+                    <div className="bg-white dark:bg-variant1-dark p-4 rounded shadow-lg max-w-full w-[350px] lg:w-[500px]">
+                        <h2 className="mb-2 text-2xl font-bold text-center text-Heading dark:text-primary-light">Add Review</h2>
                         <form onSubmit={handleSubmit}>
-                            <textarea id="description" value={formData.description} onChange={handleChange} className="w-full mb-2 p-2 border rounded focus:outline-none"></textarea>
+                            <textarea id="description" value={formData.description} onChange={handleChange} className="w-full mb-2 p-2 border dark:border-none rounded focus:outline-none dark:bg-primary-dark text-Heading dark:text-primary-light "></textarea>
                             <div className="flex justify-end gap-2">
                                 <button type="submit" className="bg-secondary text-white px-4 py-2 rounded hover:cursor-pointer">Submit</button>
                                 <button type="button" onClick={() => setShowModal(false)} className="bg-variant1-light px-4 py-2 rounded hover:cursor-pointer">Cancel</button>
@@ -85,6 +85,45 @@ export const ReviewsAdmin = () => {
                         </form>
                     </div>
                 </div>
+            ) : (
+                <>
+                    <div className="flex items-center justify-center lg:justify-start mb-4">
+                        <img src={reviewsImage} alt="Reviews" className="w-10 h-10 mr-4" />
+                        <h1 className="text-2xl font-bold text-Heading dark:text-primary-light">Reviews</h1>
+                    </div>
+                    <div className="flex flex-wrap justify-center lg:justify-start  gap-[20px]">
+                        {employees.map(employee => (
+                            <div key={employee.id} className="bg-variant1-light dark:bg-variant1-dark rounded-[10px] p-4 flex flex-col items-center text-center w-64 h-92 ">
+                                <img src={employee.image} alt={employee.name} className="w-24 h-24 rounded-full object-cover mb-4 hover:cursor-pointer" onClick={() => { setSelectedEmployee(employee); setShowReviewsModal(true); }} />
+                                <h2 className="text-Heading dark:text-secondary font-bold text-lg mb-2">{employee.name}</h2>
+                                <p className="text-sm mb-2 text-Heading dark:text-primary-light">{employee.department}</p>
+                                <button
+                                    className="bg-secondary text-white px-[10px] py-[5px] rounded-[10px]" onClick={() => { setShowModal(true); setSelectedEmployee(employee); }}>
+                                    Add Review
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
+
+            {showReviewsModal && (
+                <>
+                    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10"></div>
+                    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-20">
+                        <div className="bg-white dark:bg-variant1-dark p-4 rounded shadow-md w-[350px] lg:w-[500px]">
+                            <h2 className="mb-2 text-xl font-bold text-center text-Heading dark:text-primary-light">Reviews for {selectedEmployee.name}</h2>
+                            {Array.isArray(reviews) && reviews.map(review => (
+                                <div key={review.id}>
+                                    <p>{review.description}</p>
+                                </div>
+                            ))}
+                            <div className="flex justify-center items-center">
+                                <button type="button" onClick={() => setShowReviewsModal(false)} className="bg-variant1-light px-4 py-2 rounded hover:cursor-pointer">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </>
             )}
         </div>
     );
