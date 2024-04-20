@@ -7,20 +7,26 @@ export const LeaveAdmin = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+useEffect(() => {
+  const token = localStorage.getItem("token");
 
-    fetch("http://127.0.0.1:5500/", {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
+  fetch("http://127.0.0.1:5500/admin/leave-requests", {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Fetched data:", data); // Log the fetched data
+      if (data.leaveRequests) {
+        setLeave(data.leaveRequests);
+      } else {
+        console.error("Invalid data format:", data);
+      }
     })
-      .then((response) => response.json())
-      .then((data) => {
-        setLeave(data);
-      })
-      .catch((error) => console.error("Error fetching Leave Data:", error));
-  }, []);
+    .catch((error) => console.error("Error fetching Leave Data:", error));
+}, []);
+
 
   return (
     <div className="container mx-auto">
@@ -32,10 +38,11 @@ export const LeaveAdmin = () => {
               <tr className="bg-secondary text-white">
                 <th className="py-2 px-4">ID</th>
                 <th className="py-2 px-4">Employee</th>
+                <th className="py-2 px-4">Leave Type</th>
                 <th className="py-2 px-4">Start Date</th>
                 <th className="py-2 px-4">End Date</th>
-                <th className="py-2 px-4">Actions</th>{" "}
-                {/* Changed from Status to Actions */}
+                <th className="py-2 px-4">Status</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -43,9 +50,11 @@ export const LeaveAdmin = () => {
                 <tr key={index} className="bg-white">
                   <td className="py-2 px-4">{item.id}</td>
                   <td className="py-2 px-4">{item.employee}</td>
+                  <td className="py-2 px-4">{item.leaveType}</td>
                   <td className="py-2 px-4">{item.startDate}</td>
                   <td className="py-2 px-4">{item.endDate}</td>
                   <td className="py-2 px-4">{item.status}</td>
+                  
                 </tr>
               ))}
             </tbody>
@@ -57,10 +66,3 @@ export const LeaveAdmin = () => {
 };
 
 
-    /* <button
-          type="button"
-          className="my-3 bg-slate-200 rounded-xl p-2"
-          onClick={() => setShowForm(!showForm)}
-        >
-          Create time off
-        </button>*/

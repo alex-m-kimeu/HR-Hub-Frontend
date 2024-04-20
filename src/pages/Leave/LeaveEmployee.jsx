@@ -125,6 +125,18 @@ export const LeaveEmployee = () => {
            </h2>
            <form onSubmit={handleSubmit} className="space-y-4">
              <div>
+               <label htmlFor="Name" className="block font-semibold">
+                 Employee Name
+               </label>
+               <input
+                 type="text"
+                 id="name"
+                 placeholder="Enter Your Name"
+                 className="border border-gray-300 rounded-md px-2 py-1 w-full"
+                 required
+               />
+             </div>
+             <div>
                <label htmlFor="leaveType" className="block font-semibold">
                  Leave Type
                </label>
@@ -132,7 +144,7 @@ export const LeaveEmployee = () => {
                  id="leaveType"
                  value={leaveType}
                  onChange={(e) => setLeaveType(e.target.value)}
-                 className="border border-gray-300 rounded-md px-4 py-2 w-full"
+                 className="border border-gray-300 rounded-md px-2 py-1 w-full"
                  required
                >
                  <option value="">Select Leave Type</option>
@@ -150,7 +162,7 @@ export const LeaveEmployee = () => {
                  type="date"
                  value={startDate}
                  onChange={(e) => setStartDate(e.target.value)}
-                 className="border border-gray-300 rounded-md px-4 py-2 w-full"
+                 className="border border-gray-300 rounded-md px-2 py-1 w-full"
                  required
                />
              </div>
@@ -163,14 +175,13 @@ export const LeaveEmployee = () => {
                  type="date"
                  value={endDate}
                  onChange={(e) => setEndDate(e.target.value)}
-                 className="border border-gray-300 rounded-md px-4 py-2 w-full"
+                 className="border border-gray-300 rounded-md px-2 py-1 w-full"
                  required
                />
              </div>
              <button
                type="submit"
-               className="bg-secondary text-white px-6 py-3 rounded-md items-center"
-             >
+               className="bg-secondary text-white px-6 py-3 rounded-md text-center">
                Submit
              </button>
            </form>
@@ -180,7 +191,9 @@ export const LeaveEmployee = () => {
            <h2 className="text-2xl mb-2 font-bold text-Heading text-center">
              Leave Balance
            </h2>
-           <p className="text-lg font-semibold text-center">{remainingLeaveDays} Days</p>
+           <p className="text-lg font-semibold text-center">
+             {remainingLeaveDays} Days
+           </p>
          </div>
        </div>
      </div>
