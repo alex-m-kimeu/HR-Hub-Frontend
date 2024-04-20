@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
 export const ReviewsEmployee = () => {
     const [reviews, setReviews] = useState([]);
@@ -6,11 +7,14 @@ export const ReviewsEmployee = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        fetchReviews(token); 
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.sub.id;
+    
+        fetchReviews(token, userId); 
     }, []);
-
-    const fetchReviews = (token) => {
-        fetch('https://hr-hub-backend.onrender.com/reviews', {
+    
+    const fetchReviews = (token, userId) => {
+        fetch(`https://hr-hub-backend.onrender.com/reviews/employee/${userId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -24,7 +28,7 @@ export const ReviewsEmployee = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center space-y-10 h-screen overflow-auto px-4 md:px-0 font-body">
+        <div className="flex flex-col items-center justify-center space-y-10 px-4 md:px-0 font-body">
             <h1 className='text-2xl md:text-4xl font-bold text-Heading dark:text-primary-light'>My Reviews</h1>
             {loading ? (
                 <p className="text-lg md:text-xl text-Heading dark:text-primary-light">Loading...</p>
