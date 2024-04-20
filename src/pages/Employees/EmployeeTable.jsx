@@ -1,8 +1,8 @@
-/* eslint-disable react/prop-types */
 import { IoTrashBin } from "react-icons/io5";
+import { jwtDecode } from 'jwt-decode';
 
 export const EmployeeTable = ({ employee, onDelete }) => {
-  // Delete employee
+  
   function handleDelete() {
     const token = localStorage.getItem('token')
     
@@ -21,7 +21,12 @@ export const EmployeeTable = ({ employee, onDelete }) => {
     .catch(error => {
         console.error('There was a problem with the fetch operation: ', error);
     });
-}
+  }
+
+  const token = localStorage.getItem('token');
+  const decodedToken = jwtDecode(token);
+  const currentUserId = decodedToken.sub.id;
+  const isCurrentUser = employee.id === currentUserId;
 
   return (
     <tr key={employee.id} className="bg-white dark:bg-variant1-dark border-[6px] border-white dark:border-primary-dark">
@@ -38,8 +43,8 @@ export const EmployeeTable = ({ employee, onDelete }) => {
       <td className="p-[10px]">{employee.department}</td>
       <td className="p-[10px]">{employee.role}</td>
       <td className="p-[10px] flex justify-center items-center">
-        <button onClick={handleDelete}>
-          <IoTrashBin className="fill-Red" />
+        <button onClick={handleDelete} disabled={isCurrentUser}>
+          <IoTrashBin className={isCurrentUser ? 'fill-gray-400' : 'fill-Red'} />
         </button>
       </td>
     </tr>
