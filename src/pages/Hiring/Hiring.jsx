@@ -86,7 +86,7 @@ export const Hiring = () => {
               onChange={handleChange}
               required
             >
-              <option value="Administrative ">Administrative </option>
+              <option value="Administrative">Administrative </option>
               <option value="HR">HR</option>
               <option value="IT">IT</option>
               <option value="Finance">Finance</option>

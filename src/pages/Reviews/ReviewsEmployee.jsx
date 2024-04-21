@@ -29,7 +29,7 @@ export const ReviewsEmployee = () => {
 
     return (
         <div className="flex flex-col items-center justify-center space-y-10 px-4 md:px-0 font-body">
-            <h1 className='text-2xl md:text-4xl font-bold text-Heading dark:text-primary-light'>My Reviews</h1>
+            <h1 className='text-2xl font-bold text-Heading dark:text-primary-light'>My Reviews</h1>
             {loading ? (
                 <p className="text-lg md:text-xl text-Heading dark:text-primary-light">Loading...</p>
             ) : (
