@@ -5,6 +5,7 @@ export const LeaveEmployee = () => {
   const maxLeaves = 20;
   const [loading, setLoading] = useState(true);
   const [leaves, setLeaves] = useState([]);
+  const [leaveBalance, setLeaveBalance] = useState(maxLeaves);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [formData, setFormData] = useState({
     leaveType: "",
@@ -31,6 +32,8 @@ export const LeaveEmployee = () => {
         return response.json();
       })
       .then(data => {
+        const acceptedLeaves = data.filter(leave => leave.status === 'accepted');
+        setLeaveBalance(maxLeaves - acceptedLeaves.length);
         setLeaves(data);
         setLoading(false);
       })
@@ -69,8 +72,6 @@ export const LeaveEmployee = () => {
       });
   };
 
-  const leaveBalance = maxLeaves - leaves.length;
-
   return (
     <div className="flex flex-col gap-2">
       <h1 className="text-Heading text-2xl font-bold dark:text-variant1-light flex items-center justify-center lg:justify-start">My applications</h1>
@@ -108,7 +109,7 @@ export const LeaveEmployee = () => {
                     <td className="p-[10px]">
                       <span className={` capitalize
                     ${item.status === 'pending' ? 'text-orange-500' :
-                          item.status === 'approved' ? 'text-secondary' :
+                          item.status === 'accepted' ? 'text-secondary' :
                             'text-Red'}`}>
                         {item.status}
                       </span>
