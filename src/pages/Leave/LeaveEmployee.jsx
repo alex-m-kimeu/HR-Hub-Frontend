@@ -1,197 +1,182 @@
-import React, { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
+import { useState, useEffect } from "react";
+import { FaRegCalendarAlt } from "react-icons/fa";
 
 export const LeaveEmployee = () => {
-    const [formData, setFormData] = useState({
-      leaveType: "",
-      startDate: "",
-      endDate: "",
-    });
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
-    const [totalLeaveDays, setTotalLeaveDays] = useState(30);
-    const [remainingLeaveDays, setRemainingLeaveDays] = useState(30);
-    const [leave, setLeave] = useState([]); // Added state for leave data
-    const [leaveType, setLeaveType] = useState("");
-    const [employeeId, setEmployeeId] = useState(null);
+  const maxLeaves = 20;
+  const [loading, setLoading] = useState(true);
+  const [leaves, setLeaves] = useState([]);
+  const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [formData, setFormData] = useState({
+    leaveType: "",
+    startDate: "",
+    endDate: "",
+  });
 
-    useEffect(() => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        const decodedToken = jwtDecode(token);
-        const id = decodedToken.employee_id; 
-        setEmployeeId(id);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetchLeaves(token);
+  }, []);
+
+  const fetchLeaves = (token) => {
+    setLoading(true);
+    fetch(`https://hr-hub-backend.onrender.com/leaves/employee`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
-    }, []);
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setLeaves(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        setLoading(false);
+      });
+  };
 
-useEffect(() => {
-  if (employeeId) {
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
     const token = localStorage.getItem("token");
 
-    fetch(`https://hr-hub-backend.onrender.com/leave/${employeeId}`, {
+    fetch("https://hr-hub-backend.onrender.com/leaves", {
+      method: "POST",
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+      body: JSON.stringify(formData),
     })
-    .then((resp) => {
-      if (!resp.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return resp.json();
-    })
-    .then((data) => {
-      console.log("GET request successful:", data);
-      setLeave(data);
-    })
-    .catch((error) => {
-      console.error("There has been a problem with the GET request:", error);
-    });
-  }
-}, [employeeId]);
+      .then(response => {
+        if (response.ok) {
+          setShowLeaveModal(false);
+          fetchLeaves(token);
+        } else {
+          console.error(`Error: ${response.status}`);
+        }
+      });
+  };
 
-
-function handleChange(event) {
-  setFormData({
-    ...formData,
-    [event.target.id]: event.target.value,
-  });
-}
-  
-function handleSubmit(event) {
-  event.preventDefault();
- 
-  const token = localStorage.getItem("token");
-
-  fetch('https://hr-hub-backend.onrender.com/leaves', {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(formData),
-  })
-    .then((resp) => {
-      if (!resp.ok) {
-        throw new Error("Network response was not ok");
-      }
-      console.log("POST request successful");
-      // Handle success, if needed
-    })
-    .catch((error) => {
-      console.error("There has been a problem with your POST request:", error);
-      // Handle error, if needed
-    });
-}
-
-
-    useEffect(() => {
-      if (startDate && endDate) {
-        const diffTime = Math.abs(new Date(endDate) - new Date(startDate));
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        setTotalLeaveDays(30 - diffDays);
-      }
-    }, [startDate, endDate]);
-
+  const leaveBalance = maxLeaves - leaves.length;
 
   return (
-    <div className="container mx-auto">
-      <div className="mt-10">
-        <h1 className="text-Heading text-[30px] font-bold">
-          My Leave Applications
-        </h1>
-        <div className="overflow-x-auto">
-          <table className="w-full table-auto border-collapse">
-            <thead>
-              <tr className="text-[18px] font-normal bg-secondary text-white">
-                <th className="py-2 px-4">ID</th>
-                <th className="py-2 px-4">Employee</th>
-                <th className="py-2 px-4">Start Date</th>
-                <th className="py-2 px-4">End Date</th>
-                <th className="py-2 px-4">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leave.map((item, index) => (
-                <tr key={index} className="bg-gray-100">
-                  <td className="py-2 px-4">{item.id}</td>
-                  <td className="py-2 px-4">{item.employee}</td>
-                  <td className="py-2 px-4">{item.startDate}</td>
-                  <td className="py-2 px-4">{item.endDate}</td>
-                  <td className="py-2 px-4">{item.status}</td>
+    <div className="flex flex-col gap-2">
+      <h1 className="text-Heading text-2xl font-bold dark:text-variant1-light flex items-center justify-center lg:justify-start">My applications</h1>
+      {loading ? (
+        <p className="text-lg md:text-xl text-Heading dark:text-primary-light">Loading...</p>
+      ) : (
+        <>
+          <div className="flex flex-col gap-[10px] p-[10px] bg-variant1-light dark:bg-variant1-dark rounded-[10px] shadow-md max-w-40 mx-auto lg:mx-0 lg:items-start">
+            <h2 className="text-xl font-bold text-Heading dark:text-variant1-light">Leave Balance</h2>
+            <div className="flex justify-center">
+              <span className="flex gap-[5px]">
+                <FaRegCalendarAlt className="text-secondary w-[40px] h-[40px]" />
+                <div className="flex justify-center items-center text-Heading dark:text-variant1-light text-[20px]">
+                  {leaveBalance} Days
+                </div>
+              </span>
+            </div>
+          </div>
+          <div>
+            <table className="w-full mx-auto text-left text-Heading">
+              <thead className="text-[18px] font-body bg-secondary dark:bg-variant1-dark text-white dark:text-secondary">
+                <tr className="border-[6px] border-white dark:border-primary-dark">
+                  <th className="p-[10px]">Leave Type</th>
+                  <th className="p-[10px]">Start Date</th>
+                  <th className="p-[10px]">End Date</th>
+                  <th className="p-[10px]">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div className="mt-10 flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-6">
-        <div className="bg-white rounded-lg shadow-md p-6 w-full md:w-96">
-          <h2 className="text-2xl mb-2 font-bold text-Heading">
-            Leave Application
-          </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="leaveType" className="block font-semibold">
-                Leave Type
-              </label>
-              <select
-                id="leaveType"
-                value={formData.leaveType} 
-                onChange={handleChange}
-                className="border border-gray-300 rounded-md px-2 py-1 w-full"
-                required
-              >
-                <option value="">Select Leave Type</option>
-                <option value="sickLeave">Sick Leave</option>
-                <option value="vacationLeave">Vacation Leave</option>
-                <option value="casualLeave">Casual Leave</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="startDate" className="block font-semibold">
-                Start Date
-              </label>
-              <input
-                id="startDate"
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="border border-gray-300 rounded-md px-2 py-1 w-full"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="endDate" className="block font-semibold">
-                End Date
-              </label>
-              <input
-                id="endDate"
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="border border-gray-300 rounded-md px-2 py-1 w-full"
-                required
-              />
-            </div>
+              </thead>
+              <tbody className="text-[16px] font-normal text-Heading dark:text-white">
+                {leaves.map((item, index) => (
+                  <tr key={index} className="bg-white dark:bg-variant1-dark border-[6px] border-white dark:border-primary-dark">
+                    <td className="p-[10px]">{item.leaveType}</td>
+                    <td className="p-[10px]">{item.startDate}</td>
+                    <td className="p-[10px]">{item.endDate}</td>
+                    <td className="p-[10px]">
+                      <span className={` capitalize
+                    ${item.status === 'pending' ? 'text-orange-500' :
+                          item.status === 'approved' ? 'text-secondary' :
+                            'text-Red'}`}>
+                        {item.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="flex items-center justify-center">
             <button
-              type="submit"
-              className="bg-secondary text-white px-6 py-3 rounded-md text-center"
+              onClick={() => {
+                setShowLeaveModal(true);
+              }}
+              className='bg-secondary text-primary-light px-[10px] py-[10px] rounded-[8px]'
             >
-              Submit
+              Apply for leave
             </button>
-          </form>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-md p-4 w-full md:w-96">
-          <h2 className="text-2xl mb-2 font-bold text-Heading text-center">
-            Leave Balance
-          </h2>
-          <p className="text-lg font-semibold text-center">
-            {totalLeaveDays} Days
-          </p>
-        </div>
-      </div>
+          </div>
+          {showLeaveModal && (
+            <>
+              <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10"></div>
+              <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-20">
+                <form onSubmit={handleSubmit} className="bg-white dark:bg-variant1-dark shadow-md rounded p-5 w-[350px]">
+                  <h3 className="text-lg text-center font-bold mb-2 text-Heading dark:text-secondary">Leave Application</h3>
+                  <div className="flex flex-col space-y-4">
+                    <select
+                      id="leaveType"
+                      name="leaveType"
+                      className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
+                      value={formData.leaveType}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">Select Leave Type</option>
+                      <option value="sick">Sick</option>
+                      <option value="vacation">Vacation</option>
+                      <option value="casual">Casual</option>
+                    </select>
+                    <input
+                      id="startDate"
+                      type="date"
+                      name="startDate"
+                      value={formData.startDate}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
+                      required
+                    />
+                    <input
+                      id="endDate"
+                      type="date"
+                      name="endDate"
+                      value={formData.endDate}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 bg-white dark:bg-primary-dark rounded-md text-sm text-primary-dark dark:text-white placeholder-Heading dark:placeholder-white border border-variant1-light dark:border-primary-dark outline-none"
+                      required
+                    />
+                    <div className="flex justify-center gap-2">
+                      <button type="submit" className="bg-secondary text-white px-4 py-2 rounded hover:cursor-pointer">Submit</button>
+                      <button type="button" onClick={() => setShowLeaveModal(false)} className="bg-variant1-light px-4 py-2 rounded hover:cursor-pointer">Cancel</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 };
