@@ -1,37 +1,50 @@
-# HR-Hub Website
 
-## About
+# HR-Hub
 
-In today's dynamic work environment, efficient human resources management is crucial for the success of any organization. However, many businesses still rely on outdated and manual HR management processes, leading to inefficiencies, errors, and dissatisfaction among employees and administrators alike. These challenges include:
+HR-Hub is a human resources management application built with React and Python Flask as the back-end
 
-- Tedious Data Management
-- Complex Leave Management
-- Inefficient Employee Reports
+## Features
 
+- Role based user authentication
+- Employee management
+- New hire management
+- Leave management
 
-To address these challenges, we propose the development of a comprehensive HR Management System. Our solution aims to streamline HR processes, enhance data security, and improve employee engagement through modern technologies and user-centric design principles.
+## Installation
 
-## MVPs
+To install the application, follow these steps:
 
-### User Authentication and Authorization (JWT)
-Implement JSON Web Token (JWT) authentication to securely manage user access to the system. Define roles and permissions to differentiate between administrators and employees, ensuring appropriate data access levels.
+1. Fork the repository and then:
+`
+   git clone https://github.com/alex-m-kimeu/HR-Hub-Frontend
+ `
+2. Navigate to the project directory:
+   `
+   cd HR-Hub-Frontend
+   `
+3. Install the dependencies:
+   `
+   npm install
+  `
 
-### Employee Dashboard
-Develop a user-friendly dashboard for employees to view and update their personal information while enabling them to submit leave requests, view their leave balances, and track the status of their requests.
+## Usage
 
-### Admin Dashboard
-Design a separate dashboard with advanced functionalities tailored for HR administrators. Provide tools for managing employee data. Implement features for leave management, allowing administrators to review, approve, or reject leave requests, and adjust leave balances as needed. Enable administrators to generate customizable reports on employee performance evaluations.
+To start the application, run the following command in the project directory:
 
-### Database Management (Flask with SQLAlchemy ORM)
-Utilize Flask and SQLAlchemy ORM for efficient database management.
+`
+npm run dev
+`
 
-### Frontend (React)
-Develop a responsive frontend using React. Design visually appealing UI components for ease of navigation. Ensure seamless integration with backend APIs.
+The application will start and can be accessed at `http://localhost:5173`.
 
-## Technologies Used
+## Contributing
 
-- React
-- Tailwind CSS
-- Backend: Flask with SQLAlchemy ORM
-- JSON Web Token (JWT) for authentication
+Contributions are welcome. Please open an issue or submit a pull request.
 
+## Authors
+
+**Authors:** Alex Kimeu, Anna kioko, Candy Bosibori, Hamdi Adan, Sharon Mwende 
+
+## License
+
+**License:** [MIT License](LICENSE)
