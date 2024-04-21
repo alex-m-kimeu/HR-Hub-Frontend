@@ -48,32 +48,32 @@ export const LeaveAdmin = () => {
         {leaves.map((leave) => (
           <div
             key={leave.id}
-            className="bg-white dark:bg-variant1-dark mb-4 p-4 border-6 border-white dark:border-primary-dark shadow-md text-center"
+            className="bg-white dark:bg-variant1-dark p-2 shadow-md text-center"
           >
-            <div className="text-[18px] font-body bg-white dark:bg-variant1-dark text-black dark:text-secondary p-2 mb-2">
-              Employee: {leave.employee.name}
+            <div className="text-[18px] font-body bg-white dark:bg-variant1-dark text-secondary p-2 capitalize">
+              {leave.employee.name}
             </div>
-            <div className="text-[18px] font-body bg-white dark:bg-variant1-dark text-black dark:text-secondary p-2 mb-2">
+            <div className="text-[14px] font-body bg-white dark:bg-variant1-dark text-Heading dark:text-primary-light p-2 capitalize">
               Leave Type: {leave.leaveType}
             </div>
-            <div className="text-[18px] font-body bg-white dark:bg-variant1-dark text-black dark:text-secondary p-2 mb-2">
+            <div className="text-[14px] font-body bg-white dark:bg-variant1-dark text-Heading dark:text-primary-light p-2 ">
               Start Date: {leave.startDate}
             </div>
-            <div className="text-[18px] font-body bg-white dark:bg-variant1-dark text-black dark:text-secondary p-2 mb-2 ">
+            <div className="text-[14px] font-body bg-white dark:bg-variant1-dark text-Heading dark:text-primary-light p-2 ">
               End Date: {leave.endDate}
             </div>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center p-2">
               <button
                 onClick={() => handleStatusChange(leave.id, "accepted")}
                 className="mr-2 bg-secondary text-white px-4 py-2 rounded"
               >
-                Accepted
+                Accept
               </button>
               <button
                 onClick={() => handleStatusChange(leave.id, "rejected")}
-                className="bg-red-500 text-white px-4 py-2 rounded"
+                className="bg-Red text-white px-4 py-2 rounded"
               >
-                Rejected
+                Reject
               </button>
             </div>
           </div>
@@ -98,8 +98,8 @@ export const LeaveAdmin = () => {
                 key={leave.id}
                 className="bg-white dark:bg-variant1-dark border-[6px] border-white dark:border-primary-dark "
               >
-                <td className="p-[10px]">{leave.employee.name}</td>
-                <td className="p-[10px]">{leave.leaveType}</td>
+                <td className="p-[10px] capitalize">{leave.employee.name}</td>
+                <td className="p-[10px] capitalize">{leave.leaveType}</td>
                 <td className="p-[10px]">{leave.startDate}</td>
                 <td className="p-[10px]">{leave.endDate}</td>
                 <td className="p-[10px] flex justify-center space-x-4">
