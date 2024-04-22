@@ -1,16 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { PiEyeLight } from "react-icons/pi";
+import { PiEyeSlash } from "react-icons/pi";
 import logo from "../../assets/logo.png";
 
 export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
 
     const refreshToken = useRef(async () => {
         const refreshToken = localStorage.getItem('refreshToken');
-    
+
         try {
             const response = await fetch('https://hr-hub-backend.onrender.com/refresh-token', {
                 method: 'POST',
@@ -18,11 +25,11 @@ export const Login = () => {
                     'Authorization': `Bearer ${refreshToken}`
                 }
             });
-    
+
             if (!response.ok) {
                 throw new Error('Error: ' + response.statusText);
             }
-    
+
             const data = await response.json();
             localStorage.setItem('token', data.access_token);
             if (data.refresh_token) {
@@ -32,7 +39,7 @@ export const Login = () => {
             console.error('Error:', error);
         }
     });
-    
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -107,13 +114,22 @@ export const Login = () => {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                     />
-                    <input
-                        className='border p-2 rounded-[8px] outline-none text-Heading'
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                    />
+                    <div className='relative border p-2 rounded-[8px]'>
+                        <input
+                            className=' text-Heading pr-10 outline-none'
+                            type={passwordVisible ? "text" : "password"}
+                            placeholder="Password"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                        />
+                        <div className='absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5'>
+                            {passwordVisible ? (
+                                <PiEyeLight className='fill-Heading' onClick={togglePasswordVisibility} />
+                            ) : (
+                                <PiEyeSlash className='fill-Heading' onClick={togglePasswordVisibility} />
+                            )}
+                        </div>
+                    </div>
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center space-x-2 font-body text-sm font-normal text-Heading'>
                             <input type='checkbox' />

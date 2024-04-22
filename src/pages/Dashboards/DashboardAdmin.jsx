@@ -17,7 +17,9 @@ export const DashboardAdmin = () => {
       .then(response => response.json())
       .then(data => {
         setEmployees(data);
-        const onLeave = data.filter(employee => employee.leaves.length > 0).length;
+        const onLeave = data.filter(employee => 
+          employee.leaves.some(leave => leave.status === 'accepted')
+        ).length;
         setEmployeesOnLeave(onLeave);
         setLoading(false);
       })
@@ -73,8 +75,8 @@ export const DashboardAdmin = () => {
                 <tr key={index} className="bg-white dark:bg-variant1-dark border-[6px] border-white dark:border-primary-dark">
                   <td className="p-[10px]">{employee.name}</td>
                   <td className="p-[10px]">{employee.department}</td>
-                  <td className={`p-[10px] ${employee.leaves.length > 0 ? 'text-Red' : 'text-secondary'}`}>
-                    {employee.leaves.length > 0 ? 'Leave' : 'Office'}
+                  <td className={`p-[10px] ${employee.leaves.some(leave => leave.status === 'accepted') ? 'text-Red' : 'text-secondary'}`}>
+                    {employee.leaves.some(leave => leave.status === 'accepted') ? 'Leave' : 'Office'}
                   </td>
                 </tr>
               ))}
